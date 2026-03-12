@@ -17,8 +17,6 @@
       --tag-text:#62871a;
       --btn-bg:#f5f6f0;
       --btn-text:#5f8619;
-      --mint:#91d9d6;
-      --mint2:#c9ddb2;
     }
 
     body{
@@ -26,22 +24,28 @@
       font-family: Arial, Helvetica, "Segoe UI", sans-serif;
       color:#fff;
       background:
-        linear-gradient(180deg, #3a3789 0%, #34317f 50%, #98d8d7 50%, #c8dcb0 100%);
+        linear-gradient(
+          180deg,
+          #3a3789 0%,
+          #34317f 52%,
+          #547fa1 64%,
+          #8fcfc8 78%,
+          #c8dcb0 100%
+        );
     }
 
     .hero{
       position:relative;
       overflow:hidden;
-      min-height:500px;
-      padding:34px 24px 120px;
+      min-height:400px;
+      padding:28px 24px 56px;
       background:
-        radial-gradient(ellipse at 18% 18%, rgba(79, 219, 211, 0.18) 0%, rgba(79,219,211,0.04) 20%, transparent 42%),
-        radial-gradient(ellipse at 78% 20%, rgba(114, 227, 218, 0.12) 0%, rgba(114,227,218,0.03) 18%, transparent 34%),
-        radial-gradient(ellipse at 50% 32%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.015) 18%, transparent 38%),
+        radial-gradient(ellipse at 18% 18%, rgba(79,219,211,.18) 0%, rgba(79,219,211,.04) 20%, transparent 42%),
+        radial-gradient(ellipse at 78% 20%, rgba(114,227,218,.12) 0%, rgba(114,227,218,.03) 18%, transparent 34%),
+        radial-gradient(ellipse at 50% 32%, rgba(255,255,255,.08) 0%, rgba(255,255,255,.015) 18%, transparent 38%),
         linear-gradient(135deg, var(--bg-deep-1) 0%, var(--bg-deep-2) 48%, var(--bg-deep-3) 100%);
     }
 
-    /* 微妙垂直膜層 */
     .hero::before{
       content:"";
       position:absolute;
@@ -68,17 +72,18 @@
       mix-blend-mode:screen;
     }
 
-    /* 貓眼式柔光 */
     .hero::after{
       content:"";
       position:absolute;
-      inset:-10% -5% auto -5%;
-      height:220px;
+      left:0;
+      right:0;
+      bottom:-40px;
+      height:180px;
       background:
-        radial-gradient(ellipse at 22% 50%, rgba(255,255,255,.16) 0%, rgba(255,255,255,.06) 18%, transparent 44%),
-        radial-gradient(ellipse at 55% 46%, rgba(125,255,232,.10) 0%, rgba(125,255,232,.03) 16%, transparent 40%),
-        radial-gradient(ellipse at 83% 42%, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 20%, transparent 44%);
-      filter: blur(8px);
+        radial-gradient(ellipse at 20% 35%, rgba(255,255,255,.13) 0%, rgba(255,255,255,.04) 20%, transparent 48%),
+        radial-gradient(ellipse at 55% 45%, rgba(108,255,226,.10) 0%, rgba(108,255,226,.03) 18%, transparent 42%),
+        radial-gradient(ellipse at 82% 30%, rgba(255,255,255,.09) 0%, rgba(255,255,255,.03) 20%, transparent 46%);
+      filter: blur(10px);
       pointer-events:none;
     }
 
@@ -96,7 +101,7 @@
     .orb{
       position:absolute;
       border-radius:50%;
-      background:rgba(0, 185, 176, .88);
+      background:rgba(0,185,176,.88);
       box-shadow:0 0 22px rgba(45,255,229,.12);
       opacity:.95;
     }
@@ -123,20 +128,20 @@
       z-index:2;
       max-width:1480px;
       margin:0 auto;
-      padding-top:8px;
+      padding-top:4px;
     }
 
     .title-row{
       display:flex;
       align-items:flex-start;
       gap:10px;
-      margin-bottom:42px;
+      margin-bottom:26px;
     }
 
     .title{
       margin:0;
-      font-size:clamp(42px, 5.6vw, 72px);
-      line-height:.95;
+      font-size:clamp(42px, 5.1vw, 68px);
+      line-height:.96;
       letter-spacing:-1.5px;
       font-weight:800;
       color:var(--white);
@@ -148,8 +153,8 @@
     .tiny-link{
       color:rgba(255,255,255,.85);
       text-decoration:none;
-      font-size:20px;
-      margin-top:14px;
+      font-size:18px;
+      margin-top:12px;
       opacity:.9;
     }
 
@@ -163,8 +168,8 @@
 
     .subtitle{
       margin:0;
-      max-width:1100px;
-      font-size:clamp(24px, 2.9vw, 40px);
+      max-width:1060px;
+      font-size:clamp(24px, 2.6vw, 36px);
       line-height:1.18;
       font-weight:780;
       color:var(--white);
@@ -176,7 +181,7 @@
     .subtitle .green{ color:var(--green); }
 
     .hero-note{
-      padding-top:16px;
+      padding-top:12px;
       font-size:15px;
       font-weight:700;
       color:rgba(255,255,255,.82);
@@ -185,9 +190,13 @@
 
     .cards-section{
       position:relative;
-      padding:54px 10px 18px;
+      padding:38px 10px 18px;
       background:
-        linear-gradient(90deg, var(--mint) 0%, var(--mint2) 100%);
+        radial-gradient(circle at 50% -40px,
+          rgba(255,255,255,.34) 0%,
+          rgba(255,255,255,.14) 28%,
+          transparent 68%),
+        linear-gradient(90deg, #91d8d6 0%, #c7ddb0 100%);
     }
 
     .cards{
@@ -195,11 +204,11 @@
       margin:0 auto;
       display:grid;
       grid-template-columns:repeat(3, minmax(280px, 1fr));
-      gap:72px;
+      gap:52px;
     }
 
     .card{
-      min-height:320px;
+      min-height:300px;
       border-radius:4px;
       overflow:hidden;
       transition:transform .18s ease, filter .18s ease;
@@ -212,8 +221,8 @@
 
     .card-inner{
       position:relative;
-      min-height:320px;
-      padding:38px 42px 34px;
+      min-height:300px;
+      padding:34px 38px 30px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
@@ -318,43 +327,22 @@
     .btn:hover{ filter:brightness(.98); }
 
     @media (max-width:1200px){
-      .cards{
-        gap:28px;
-      }
-      .card-inner{
-        min-height:290px;
-      }
+      .cards{ gap:28px; }
+      .card-inner{ min-height:280px; }
     }
 
     @media (max-width:1024px){
-      .cards{
-        grid-template-columns:1fr;
-      }
-      .hero{
-        min-height:auto;
-        padding-bottom:90px;
-      }
-      .subtitle{
-        max-width:100%;
-      }
+      .cards{ grid-template-columns:1fr; }
+      .hero{ min-height:auto; padding-bottom:54px; }
+      .subtitle{ max-width:100%; }
     }
 
     @media (max-width:680px){
-      .hero{
-        padding:24px 18px 76px;
-      }
-      .cards-section{
-        padding:30px 14px 20px;
-      }
-      .card-inner{
-        padding:28px 26px;
-      }
-      .tag{
-        font-size:16px;
-      }
-      .btn{
-        font-size:16px;
-      }
+      .hero{ padding:24px 18px 48px; }
+      .cards-section{ padding:26px 14px 20px; }
+      .card-inner{ padding:28px 26px; }
+      .tag{ font-size:16px; }
+      .btn{ font-size:16px; }
     }
   </style>
 </head>
@@ -391,7 +379,6 @@
 
   <section class="cards-section">
     <div class="cards">
-
       <article class="card">
         <div class="card-inner governance">
           <div class="card-layer">
@@ -424,9 +411,9 @@
           </div>
         </div>
       </article>
-
     </div>
   </section>
 
 </body>
 </html>
+  
