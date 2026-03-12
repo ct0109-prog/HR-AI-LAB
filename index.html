@@ -6,52 +6,131 @@
   <title>HR Future Lab</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: "Segoe UI", Arial, sans-serif;
       background: #eef3f7;
       color: #1f2a44;
     }
+
     .hero {
-      background: #403d8a;
-      color: #fff;
-      padding: 70px 48px 120px;
       position: relative;
+      overflow: hidden;
+      padding: 72px 48px 120px;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(0, 255, 209, 0.18) 0, rgba(0,255,209,0) 12%),
+        radial-gradient(circle at 22% -2%, rgba(255,255,255,0.22) 0, rgba(255,255,255,0) 5%),
+        radial-gradient(circle at 54% 10%, rgba(0,255,209,0.14) 0, rgba(0,255,209,0) 10%),
+        radial-gradient(circle at 73% -3%, rgba(255,255,255,0.18) 0, rgba(255,255,255,0) 5%),
+        radial-gradient(circle at 87% 8%, rgba(0,255,209,0.14) 0, rgba(0,255,209,0) 8%),
+        linear-gradient(180deg, #403d8a 0%, #3d3a88 100%);
+      color: #fff;
     }
-    .hero h1 {
-      margin: 0;
-      font-size: 52px;
-      line-height: 1.1;
-      font-weight: 800;
-    }
-    .hero h1 .green {
-      color: #36ff3b;
-    }
-    .hero p {
-      margin: 24px 0 0;
-      font-size: 28px;
-      font-weight: 700;
-      line-height: 1.4;
-    }
-    .hero p .green {
-      color: #36ff3b;
-    }
-    .hero-note {
+
+    .hero::before {
+      content: "";
       position: absolute;
-      right: 42px;
-      top: 145px;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 74px;
+      background:
+        radial-gradient(circle at 2.5% 58%, #00a7a7 0 18px, transparent 19px),
+        linear-gradient(#6c6aa8, #6c6aa8) 2.5% 0 / 18px 58px no-repeat,
+        radial-gradient(circle at 10% 28%, #8f8f95 0 20px, transparent 21px),
+        linear-gradient(#8f8f95, #8f8f95) 10% 0 / 20px 28px no-repeat,
+        radial-gradient(circle at 18% 78%, #00a7a7 0 18px, transparent 19px),
+        linear-gradient(#6c6aa8, #6c6aa8) 18% 0 / 18px 78px no-repeat,
+        radial-gradient(circle at 38% 48%, #00a7a7 0 19px, transparent 20px),
+        linear-gradient(#6c6aa8, #6c6aa8) 38% 0 / 19px 48px no-repeat,
+        radial-gradient(circle at 54% 30%, #00a7a7 0 20px, transparent 21px),
+        linear-gradient(#6c6aa8, #6c6aa8) 54% 0 / 20px 30px no-repeat,
+        radial-gradient(circle at 67% 64%, #8f8f95 0 18px, transparent 19px),
+        linear-gradient(#6c6aa8, #6c6aa8) 67% 0 / 18px 64px no-repeat,
+        radial-gradient(circle at 80% 48%, #00a7a7 0 20px, transparent 21px),
+        linear-gradient(#6c6aa8, #6c6aa8) 80% 0 / 20px 48px no-repeat,
+        radial-gradient(circle at 94% 28%, #00a7a7 0 18px, transparent 19px),
+        linear-gradient(#6c6aa8, #6c6aa8) 94% 0 / 18px 28px no-repeat;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 64px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .green {
+      color: #36ff3b;
+    }
+
+    .mini-link {
+      font-size: 22px;
+      opacity: 0.92;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .subtitle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 750;
+      line-height: 1.35;
+      max-width: 980px;
+    }
+
+    .hero-note {
       font-size: 14px;
-      opacity: 0.85;
+      opacity: 0.88;
+      margin-top: 12px;
+      white-space: nowrap;
     }
 
     .cards-wrap {
-      margin-top: -56px;
-      padding: 0 36px 60px;
-      background: linear-gradient(90deg, #97d7d7 0%, #c8d8a7 100%);
+      background: linear-gradient(90deg, #98d7d7 0%, #c7d8a7 100%);
+      padding: 42px 28px 64px;
     }
 
     .cards {
-      max-width: 1360px;
+      max-width: 1380px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(3, minmax(280px, 1fr));
@@ -59,36 +138,87 @@
     }
 
     .card {
-      background: rgba(255,255,255,0.14);
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      min-height: 290px;
+      box-shadow: 0 14px 32px rgba(31, 42, 68, 0.16);
+      min-height: 260px;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
       position: relative;
     }
+
     .card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 18px 38px rgba(0,0,0,0.18);
+      box-shadow: 0 20px 42px rgba(31, 42, 68, 0.22);
     }
 
     .card-bg {
-      height: 100%;
-      min-height: 290px;
-      padding: 26px;
+      position: relative;
+      min-height: 260px;
+      padding: 28px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background-size: cover;
-      background-position: center;
-      position: relative;
+      overflow: hidden;
+      isolation: isolate;
     }
 
     .card-bg::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: rgba(70, 80, 100, 0.28);
+      background-image:
+        linear-gradient(rgba(255,255,255,0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.09) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .card-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(35, 48, 72, 0.18);
+      z-index: 0;
+    }
+
+    .governance {
+      background:
+        radial-gradient(circle at 50% 52%, rgba(155,255,244,0.35) 0, rgba(155,255,244,0.08) 12%, rgba(155,255,244,0) 28%),
+        radial-gradient(circle at 18% 22%, rgba(140,255,245,0.75) 0 6px, transparent 7px),
+        radial-gradient(circle at 84% 22%, rgba(140,255,245,0.75) 0 6px, transparent 7px),
+        radial-gradient(circle at 16% 78%, rgba(140,255,245,0.75) 0 6px, transparent 7px),
+        radial-gradient(circle at 86% 78%, rgba(140,255,245,0.75) 0 6px, transparent 7px),
+        radial-gradient(circle at 50% 52%, rgba(140,255,245,0.75) 0 7px, transparent 8px),
+        repeating-radial-gradient(circle at 50% 52%, rgba(140,255,245,0.22) 0 2px, transparent 2px 26px),
+        linear-gradient(135deg, #67798a 0%, #556c79 100%);
+    }
+
+    .intelligence {
+      background:
+        radial-gradient(circle at 22% 56%, rgba(122,185,255,0.78) 0 6px, transparent 7px),
+        radial-gradient(circle at 34% 56%, rgba(122,185,255,0.78) 0 6px, transparent 7px),
+        radial-gradient(circle at 50% 56%, rgba(122,185,255,0.82) 0 7px, transparent 8px),
+        radial-gradient(circle at 66% 56%, rgba(122,185,255,0.78) 0 6px, transparent 7px),
+        radial-gradient(circle at 80% 56%, rgba(122,185,255,0.78) 0 6px, transparent 7px),
+        linear-gradient(90deg, transparent 20%, rgba(122,185,255,0.12) 40%, rgba(122,185,255,0.34) 50%, rgba(122,185,255,0.12) 60%, transparent 80%),
+        radial-gradient(circle at 16% 18%, rgba(109,183,255,0.85) 0 7px, transparent 8px),
+        radial-gradient(circle at 84% 20%, rgba(109,183,255,0.85) 0 7px, transparent 8px),
+        radial-gradient(circle at 84% 84%, rgba(109,183,255,0.85) 0 7px, transparent 8px),
+        radial-gradient(circle at 16% 86%, rgba(109,183,255,0.85) 0 7px, transparent 8px),
+        linear-gradient(135deg, #6d798e 0%, #647384 100%);
+    }
+
+    .policy {
+      background:
+        radial-gradient(circle at 50% 48%, rgba(255,224,120,0.22) 0, rgba(255,224,120,0.06) 14%, rgba(255,224,120,0) 30%),
+        radial-gradient(circle at 25% 62%, rgba(147,255,245,0.72) 0 5px, transparent 6px),
+        radial-gradient(circle at 75% 62%, rgba(147,255,245,0.72) 0 5px, transparent 6px),
+        radial-gradient(circle at 34% 28%, rgba(255,221,119,0.72) 0 6px, transparent 7px),
+        radial-gradient(circle at 66% 28%, rgba(255,221,119,0.72) 0 6px, transparent 7px),
+        radial-gradient(circle at 50% 18%, rgba(255,221,119,0.72) 0 6px, transparent 7px),
+        repeating-radial-gradient(circle at 50% 48%, rgba(255,221,119,0.18) 0 2px, transparent 2px 24px),
+        linear-gradient(135deg, #8a8576 0%, #807969 100%);
     }
 
     .card-content {
@@ -98,47 +228,78 @@
 
     .tag {
       display: inline-block;
-      background: #f3f4ef;
-      color: #4d7a12;
-      font-weight: 700;
+      background: #f4f6ef;
+      color: #5b8619;
       font-size: 13px;
+      font-weight: 800;
       padding: 8px 12px;
       border-radius: 3px;
-      margin-bottom: 18px;
+      letter-spacing: 0.2px;
     }
 
     .btn {
       display: inline-block;
-      background: #f3f4ef;
-      color: #4d7a12;
-      font-weight: 800;
+      background: #f4f6ef;
+      color: #4f7f10;
       font-size: 17px;
+      font-weight: 800;
       text-decoration: none;
       padding: 10px 16px;
       border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.1);
     }
 
-    @media (max-width: 1024px) {
-      .cards { grid-template-columns: 1fr; }
-      .hero-note {
-        position: static;
-        margin-top: 18px;
+    .btn:hover {
+      filter: brightness(0.98);
+    }
+
+    @media (max-width: 1100px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 48px;
+      }
+      .subtitle {
+        font-size: 24px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .hero {
+        padding: 58px 24px 90px;
+      }
+      .cards-wrap {
+        padding: 28px 20px 48px;
+      }
+      h1 {
+        font-size: 42px;
+      }
+      .subtitle {
+        font-size: 22px;
       }
     }
   </style>
 </head>
 <body>
   <section class="hero">
-    <h1>HR <span class="green">Future</span> Lab</h1>
-    <p>Exploring the Future of <span class="green">AI-Augmented</span> HR Governance</p>
-    <div class="hero-note">2026/3 HRIS Team</div>
+    <div class="hero-content">
+      <div class="title-row">
+        <h1>HR <span class="green">Future</span> Lab</h1>
+        <a class="mini-link" href="index.html">🔗</a>
+      </div>
+
+      <div class="subtitle-row">
+        <p class="subtitle">Exploring the Future of <span class="green">AI-Augmented</span> HR Governance</p>
+        <div class="hero-note">2026/3 HRIS Team</div>
+      </div>
+    </div>
   </section>
 
   <section class="cards-wrap">
     <div class="cards">
-      <div class="card">
-        <div class="card-bg" style="background-image:url('https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=80');">
+      <article class="card">
+        <div class="card-bg governance">
           <div class="card-content">
             <div class="tag">HR AI GOVERNANCE FRAMEWORK</div>
           </div>
@@ -146,10 +307,10 @@
             <a class="btn" href="hr-ai-governance-opening-v2%20(2).html" target="_blank">Explore Framework</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="card">
-        <div class="card-bg" style="background-image:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80');">
+      <article class="card">
+        <div class="card-bg intelligence">
           <div class="card-content">
             <div class="tag">HR INTELLIGENCE ENGINE</div>
           </div>
@@ -157,10 +318,10 @@
             <a class="btn" href="hr-intelligence.html" target="_blank">View Intelligence Deck</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="card">
-        <div class="card-bg" style="background-image:url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80');">
+      <article class="card">
+        <div class="card-bg policy">
           <div class="card-content">
             <div class="tag">POLICY MIND</div>
           </div>
@@ -168,7 +329,7 @@
             <a class="btn" href="policymind-v11.html" target="_blank">Explore Policy Mind</a>
           </div>
         </div>
-      </div>
+      </article>
     </div>
   </section>
 </body>
