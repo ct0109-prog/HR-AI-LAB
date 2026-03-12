@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="zh-TW" translate="no">
+<head>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PolicyMind — AI-Augmented HR Governance</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS ── */
+:root {
+  /* Surfaces */
+  --bg:       #f4f9f7;
+  --bg2:      #edf5f2;
+  --white:    #ffffff;
+  --panel:    #f8fcfa;
+
+  /* Borders */
+  --rim:      rgba(41,110,98,0.09);
+  --rim2:     rgba(41,110,98,0.16);
+  --rim3:     rgba(41,110,98,0.26);
+
+  /* Ink */
+  --ink:      #0b1d1a;
+  --ink2:     #2a4f45;
+  --ink3:     #648c84;
+  --ink4:     #96bab4;
+
+  /* Brand — Teal family */
+  --teal:     #2a8a78;
+  --teal2:    #1e6d5e;
+  --teal3:    #14544a;
+  --teal-lt:  #e6f4f1;
+  --teal-md:  rgba(42,138,120,0.11);
+
+  /* Brand — Gold family */
+  --gold:     #b8962a;
+  --gold2:    #9a7c1e;
+  --gold-lt:  #fdf6e3;
+  --gold-md:  rgba(184,150,42,0.11);
+
+  /* Semantic */
+  --red:      #c0392b;
+  --red-lt:   rgba(192,57,43,0.07);
+  --amber:    #c07c1a;
+  --amber-lt: rgba(192,124,26,0.07);
+  --green:    #1e7a5e;
+  --green-lt: rgba(30,122,94,0.07);
+  --blue:     #1a6fa8;
+  --blue-lt:  rgba(26,111,168,0.07);
+
+  /* Glow — richer, multi-stop */
+  --glow-t:   rgba(42,138,120,0.13);
+  --glow-g:   rgba(184,150,42,0.09);
+  --glow-t2:  rgba(42,138,120,0.07);
+
+  /* ── TYPOGRAPHY ── */
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans:  'Inter', 'Noto Sans TC', system-ui, sans-serif;
+
+  --ease: cubic-bezier(0.16,1,0.3,1);
+
+  /* Shadows */
+  --shadow:    0 2px 18px rgba(14,50,44,0.07);
+  --shadow-lg: 0 8px 52px rgba(14,50,44,0.11);
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── AMBIENT BACKGROUND ── */
+.ambient {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(100px);
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.orb1 { width:700px;height:700px; background:radial-gradient(circle, rgba(42,138,120,0.18) 0%, rgba(42,138,120,0.04) 70%); top:-250px;left:-180px; animation-duration:24s; }
+.orb2 { width:480px;height:480px; background:radial-gradient(circle, rgba(184,150,42,0.14) 0%, rgba(184,150,42,0.03) 70%); top:25%;right:-120px; animation-delay:-9s; animation-duration:20s; }
+.orb3 { width:400px;height:400px; background:radial-gradient(circle, rgba(42,138,120,0.10) 0%, rgba(42,138,120,0.02) 70%); bottom:-100px;left:30%; animation-delay:-15s; }
+.orb4 { width:300px;height:300px; background:radial-gradient(circle, rgba(184,150,42,0.10) 0%, rgba(184,150,42,0.02) 70%); bottom:20%;left:60%; animation-delay:-6s; animation-duration:18s; }
+@keyframes drift {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(28px,18px) scale(1.07); }
+}
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    linear-gradient(rgba(42,138,120,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42,138,120,0.022) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:200;
+  height: 58px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem;
+  background: rgba(245,249,248,0.90);
+  backdrop-filter: blur(20px) saturate(1.8);
+  border-bottom: 1px solid var(--rim2);
+}
+.nav-brand {
+  display: flex; align-items: center; gap: .55rem;
+  font-family: var(--sans); font-weight: 700; font-size: .92rem;
+  color: var(--ink); text-decoration: none; letter-spacing: -.01em;
+}
+.nav-mark {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: linear-gradient(135deg, var(--teal), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  font-size: .6rem; color: #fff;
+  box-shadow: 0 0 14px rgba(42,138,120,0.35);
+}
+.nav-links { display:flex; align-items:center; gap:2rem; list-style:none; }
+.nav-links a {
+  font-size: .8rem; color: var(--ink3); text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--teal); }
+.nav-cta {
+  font-size: .78rem; font-weight: 600;
+  padding: .42em 1.2em; border-radius: 7px;
+  background: var(--teal); border: none;
+  color: #fff; cursor: pointer; transition: all .2s;
+}
+.nav-cta:hover { background: var(--teal2); box-shadow: 0 4px 14px rgba(42,138,120,0.3); }
+
+/* ── HERO ── */
+.hero {
+  position: relative; z-index: 1;
+  min-height: 82vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 5.5rem 2rem 3rem;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -5%, rgba(42,138,120,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 30% at 80% 80%, rgba(184,150,42,0.06) 0%, transparent 60%);
+}
+
+.hero-chip {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: var(--sans);
+  font-size: .62rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 1.2rem;
+  padding: .32em 1em; border-radius: 100px;
+  background: linear-gradient(135deg, rgba(42,138,120,0.10), rgba(184,150,42,0.06));
+  border: 1px solid rgba(42,138,120,0.22);
+  box-shadow: 0 1px 8px rgba(42,138,120,0.08);
+}
+.hero-chip::before { content:'◈'; font-size:.58rem; }
+
+.hero-super {
+  font-family: var(--sans);
+  font-size: clamp(.62rem,1vw,.75rem);
+  font-weight: 500; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--ink4); margin-bottom: .5rem;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(3.8rem,9.5vw,8rem);
+  font-weight: 400;
+  letter-spacing: -.01em;
+  line-height: 1.0;
+  margin-bottom: 1.2rem;
+  color: var(--ink);
+}
+h1 .accent {
+  background: linear-gradient(115deg, var(--teal) 10%, var(--gold) 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-style: italic;
+}
+
+.hero-desc {
+  font-family: var(--sans);
+  font-size: clamp(.9rem,1.4vw,1.02rem);
+  color: var(--ink3);
+  font-weight: 400;
+  max-width: 460px;
+  line-height: 1.85;
+  letter-spacing: .015em;
+  margin-bottom: 1.6rem;
+}
+
+.hero-btns {
+  display: flex; align-items: center; gap: .8rem;
+  flex-wrap: wrap; justify-content: center;
+  margin-bottom: 2rem;
+}
+.btn-p {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .86rem; font-weight: 600;
+  padding: .72em 1.7em; border-radius: 8px;
+  background: linear-gradient(135deg, var(--teal), var(--teal2));
+  color: #fff; border: none; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(42,138,120,0.35);
+  transition: all .22s var(--ease); text-decoration: none;
+}
+.btn-p:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(42,138,120,0.45); }
+.btn-g {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .86rem; font-weight: 500;
+  padding: .72em 1.7em; border-radius: 8px;
+  background: #fff; border: 1px solid var(--rim3);
+  color: var(--ink2); cursor: pointer; transition: all .2s; text-decoration: none;
+  box-shadow: var(--shadow);
+}
+.btn-g:hover { background: var(--teal-lt); border-color: var(--teal); color: var(--teal); }
+
+/* hero stats — relative, not absolute */
+.hero-stats {
+  position: relative;
+  display: flex; align-items: stretch; gap: 0;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--rim3);
+  border-radius: 14px; overflow: hidden;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(14,50,44,0.10);
+  white-space: nowrap;
+}
+.hs-it {
+  padding: .9rem 2rem; text-align: center;
+  border-right: 1px solid var(--rim2);
+}
+.hs-it:last-child { border-right: none; }
+.hs-n {
+  font-family: var(--sans); font-size: 1.9rem; font-weight: 700;
+  line-height: 1; margin-bottom: .18rem;
+}
+.hs-n.r { color: var(--red); }
+.hs-n.a { color: var(--amber); }
+.hs-n.t {
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hs-n.g { color: var(--green); }
+.hs-l { font-size: .62rem; color: var(--ink3); letter-spacing: .04em; font-weight: 500; }
+
+/* ── SHARED SECTION STYLES ── */
+.sec-wrap {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 4.5rem 2rem;
+}
+.sec-lbl {
+  font-family: var(--sans);
+  font-size: .6rem; font-weight: 600; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--ink4); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: .75rem;
+}
+.sec-lbl::before { content:''; width:20px; height:1px; background: linear-gradient(90deg, var(--teal), var(--gold)); }
+.sec-h {
+  font-family: var(--serif);
+  font-size: clamp(2rem,4vw,3rem);
+  font-weight: 400;
+  letter-spacing: -.01em;
+  color: var(--ink); line-height: 1.2; margin-bottom: .9rem;
+}
+.sec-p {
+  font-family: var(--sans);
+  font-size: .93rem; color: var(--ink3); font-weight: 400;
+  line-height: 1.85; letter-spacing: .012em; max-width: 520px;
+}
+
+/* ── NARRATIVE BAND ── */
+.narr-band {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--rim2); border-bottom: 1px solid var(--rim2);
+  background:
+    linear-gradient(135deg, rgba(42,138,120,0.07) 0%, rgba(244,249,247,0.97) 45%, rgba(184,150,42,0.06) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 100%);
+}
+.narr-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 4.5rem 2rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+}
+.narr-quote {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem,2.8vw,2.3rem);
+  font-weight: 400; color: var(--ink);
+  line-height: 1.35; letter-spacing: -.005em;
+}
+.narr-quote em { font-style: italic; color: var(--teal); }
+
+.shift-stack { display: flex; flex-direction: column; gap: .6rem; }
+.shift {
+  display: grid; grid-template-columns: 1fr 22px 1fr;
+  gap: .5rem; align-items: center;
+  padding: .9rem 1rem; border-radius: 10px;
+  background: rgba(255,255,255,0.88); border: 1px solid var(--rim2);
+  box-shadow: 0 2px 10px rgba(14,50,44,0.05);
+  transition: all .2s; cursor: default;
+}
+.shift:hover { background: #fff; box-shadow: 0 4px 18px rgba(14,50,44,0.09); transform: translateX(2px); }
+.sf { font-size: .76rem; color: var(--ink3); line-height: 1.55; letter-spacing: .008em; }
+.sa { text-align: center; color: var(--teal); font-size: .8rem; font-weight: 600; }
+.st { font-size: .76rem; color: var(--teal); font-weight: 600; line-height: 1.55; letter-spacing: .008em; }
+
+/* ── CAPABILITIES ── */
+.cap-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--rim2);
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--rim2);
+  margin-top: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+.cap {
+  background: #fff;
+  padding: 1.8rem 1.6rem;
+  position: relative; overflow: hidden;
+  transition: background .25s;
+}
+.cap:hover { background: var(--panel); }
+.cap-halo {
+  position: absolute; top:-80px; right:-80px;
+  width:240px; height:240px; border-radius:50%;
+  filter:blur(60px); opacity:0; transition:opacity .45s;
+  pointer-events:none;
+}
+.cap:hover .cap-halo { opacity:1; }
+.cap:nth-child(1) .cap-halo { background: radial-gradient(circle, rgba(42,138,120,0.22) 0%, transparent 70%); }
+.cap:nth-child(2) .cap-halo { background: radial-gradient(circle, rgba(184,150,42,0.18) 0%, transparent 70%); }
+.cap:nth-child(3) .cap-halo { background: radial-gradient(circle, rgba(42,138,120,0.16) 0%, transparent 70%); }
+
+.cap-n {
+  font-family: var(--sans);
+  font-size: .68rem; color: var(--ink4); font-weight: 600; letter-spacing: .06em;
+  margin-bottom: 1.4rem; display: flex; align-items: center; gap: .4rem;
+}
+.cap-n::before { content:''; width:12px; height:1px; background:currentColor; }
+
+.cap-ico {
+  width: 44px; height: 44px; border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; margin-bottom: 1.2rem;
+}
+.cap:nth-child(1) .cap-ico { background: linear-gradient(135deg, var(--teal-lt), rgba(42,138,120,0.05)); border:1px solid rgba(42,138,120,0.18); }
+.cap:nth-child(2) .cap-ico { background: linear-gradient(135deg, var(--gold-lt),  rgba(184,150,42,0.05)); border:1px solid rgba(184,150,42,0.18); }
+.cap:nth-child(3) .cap-ico { background: linear-gradient(135deg, var(--teal-lt), rgba(42,138,120,0.05)); border:1px solid rgba(42,138,120,0.18); }
+
+.cap-verb {
+  font-family: var(--sans);
+  font-size: .58rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  margin-bottom: .35rem;
+}
+.cap:nth-child(1) .cap-verb { color: var(--teal); }
+.cap:nth-child(2) .cap-verb { color: var(--gold); }
+.cap:nth-child(3) .cap-verb { color: var(--teal); }
+
+.cap-title {
+  font-family: var(--serif);
+  font-size: 1.35rem; font-weight: 400;
+  color: var(--ink); letter-spacing: -.005em; margin-bottom: .7rem; line-height: 1.25;
+}
+.cap-body { font-family: var(--sans); font-size: .8rem; color: var(--ink3); line-height: 1.8; letter-spacing: .01em; }
+.cap-pts { margin-top: 1.2rem; display: flex; flex-direction: column; gap: .4rem; }
+.cp {
+  display: flex; align-items: center; gap: .5rem;
+  font-family: var(--sans); font-size: .75rem; color: var(--ink2); letter-spacing: .008em;
+}
+.cp::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.cap:nth-child(1) .cp::before { background: var(--teal); }
+.cap:nth-child(2) .cp::before { background: var(--gold); }
+.cap:nth-child(3) .cp::before { background: var(--teal); }
+
+/* ── DEMO PANEL ── */
+.demo-outer {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+.demo-panel {
+  background: #fff;
+  border: 1px solid var(--rim3);
+  border-radius: 18px; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.dp-bar {
+  display: flex; align-items: center; gap: .55rem;
+  padding: .9rem 1.3rem;
+  /* Teal-gold top stripe */
+  background: linear-gradient(90deg, var(--teal3) 0%, var(--teal2) 60%, var(--gold2) 100%);
+  border-bottom: 1px solid var(--rim2);
+}
+.dp-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.3); }
+.dp-dot:nth-child(1) { background:rgba(255,255,255,0.6); }
+.dp-lbl { margin-left:.75rem; font-size:.68rem; color:rgba(255,255,255,0.75); letter-spacing:.03em; }
+.dp-live {
+  margin-left: auto; display: flex; align-items: center; gap: .38rem;
+  font-size: .6rem; color: #a8f0e0;
+}
+.dp-blink {
+  width:5px; height:5px; border-radius:50%;
+  background: #a8f0e0;
+  box-shadow: 0 0 6px rgba(168,240,224,0.6);
+  animation: blk 2s infinite;
+}
+@keyframes blk { 0%,100%{opacity:1} 55%{opacity:.2} }
+
+.dp-body { display: grid; grid-template-columns: 230px 1fr; }
+.dp-side {
+  border-right: 1px solid var(--rim2);
+  padding: 1.1rem 0; background: var(--panel);
+}
+.dps-lbl {
+  font-size: .52rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink4); padding: 0 1.1rem; margin-bottom: .5rem;
+}
+.dps-row {
+  display: flex; align-items: center; gap: .65rem;
+  padding: .6rem 1.1rem; cursor: pointer; transition: background .14s;
+  border-left: 2px solid transparent;
+}
+.dps-row:hover { background: var(--teal-lt); }
+.dps-row.on { background: rgba(42,138,120,0.07); border-left-color: var(--teal); }
+.dps-d { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.dps-d.r { background:var(--red); box-shadow:0 0 5px rgba(192,57,43,0.4); }
+.dps-d.a { background:var(--amber); box-shadow:0 0 5px rgba(192,124,26,0.4); }
+.dps-d.g { background:var(--green); }
+.dps-d.b { background:var(--teal); }
+.dps-t { font-size: .7rem; color: var(--ink2); line-height: 1.3; }
+.dps-t b { color: var(--ink); font-weight: 600; display: block; }
+
+.dp-main { padding: 1.5rem 1.9rem; }
+.dpm-hd {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+.dpm-title { font-size: .82rem; font-weight: 600; color: var(--ink); margin-bottom: .22rem; }
+.dpm-sub { font-size: .67rem; color: var(--ink3); }
+.dpm-badge {
+  font-size: .56rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  padding: .22em .65em; border-radius: 5px; flex-shrink: 0; margin-top: .15rem;
+}
+.dpm-badge.r { background:var(--red-lt); color:var(--red); border:1px solid rgba(192,57,43,0.2); }
+
+.dpm-list { display: flex; flex-direction: column; gap: .42rem; margin-bottom: 1.2rem; }
+.dpm-row {
+  display: flex; align-items: flex-start; gap: .75rem;
+  padding: .62rem .82rem; border-radius: 8px;
+  border: 1px solid transparent; font-size: .72rem;
+  transition: transform .14s;
+}
+.dpm-row:hover { transform: translateX(3px); }
+.dpm-row.er { background:var(--red-lt);   border-color:rgba(192,57,43,0.14); }
+.dpm-row.wa { background:var(--amber-lt); border-color:rgba(192,124,26,0.14); }
+.dpm-row.ok { background:var(--green-lt); border-color:rgba(30,122,94,0.14); }
+.dpm-row.in { background:var(--teal-md);  border-color:rgba(42,138,120,0.14); }
+.dpm-d { width:5px; height:5px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+.dpm-d.r { background:var(--red); }
+.dpm-d.a { background:var(--amber); }
+.dpm-d.g { background:var(--green); }
+.dpm-d.b { background:var(--teal); }
+.dpm-txt { color:var(--ink2); flex:1; line-height:1.45; }
+.dpm-meta { font-size:.6rem; color:var(--ink3); margin-top:.18rem; }
+
+.dpm-acts { display: grid; grid-template-columns: repeat(3,1fr); gap: .55rem; }
+.dpm-act {
+  padding: .75rem; border-radius: 8px;
+  background: var(--panel); border: 1px solid var(--rim2);
+  cursor: pointer; transition: all .18s;
+}
+.dpm-act:hover { background: var(--teal-lt); border-color: rgba(42,138,120,0.3); }
+.dpm-al { font-size:.52rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink4); margin-bottom:.28rem; font-weight:700; }
+.dpm-at { font-size:.7rem; color:var(--ink2); line-height:1.4; }
+.dpm-aa { font-size:.62rem; color:var(--teal); margin-top:.35rem; font-weight:600; }
+
+/* ── CONSENSUS ── */
+.cons-section { position: relative; z-index: 1; }
+.cons-inner { max-width:1100px; margin:0 auto; padding:4.5rem 2rem; }
+.cons-card {
+  background: #fff; border: 1px solid var(--rim3);
+  border-radius: 18px; overflow: hidden; margin-top: 1.6rem;
+  box-shadow: var(--shadow-lg);
+}
+.cc-top {
+  padding: 1.8rem 2.2rem;
+  background: linear-gradient(135deg, rgba(42,138,120,0.06) 0%, rgba(184,150,42,0.04) 100%);
+  border-bottom: 1px solid var(--rim2);
+  position: relative; overflow: hidden;
+}
+.cc-top::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+}
+.cc-chip {
+  font-family: var(--sans);
+  font-size: .58rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: .8rem;
+}
+.cc-title {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem,2.5vw,2rem);
+  color: var(--ink); font-weight: 400; letter-spacing: -.005em;
+  line-height: 1.25; margin-bottom: .85rem;
+}
+.cc-body { font-family: var(--sans); font-size: .84rem; color: var(--ink3); line-height: 1.85; letter-spacing: .012em; max-width: 580px; }
+
+.cc-main { padding: 1.8rem 2.2rem; }
+.ba-grid {
+  display: grid; grid-template-columns: 1fr 36px 1fr;
+  gap: .7rem; align-items: center; margin-bottom: 1.5rem;
+}
+.ba-col { border-radius: 11px; padding: 1.3rem; }
+.ba-col.before { background: var(--red-lt);   border: 1px solid rgba(192,57,43,0.14); }
+.ba-col.after  { background: var(--green-lt); border: 1px solid rgba(30,122,94,0.14); }
+.ba-lbl {
+  font-size: .56rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  margin-bottom: .72rem;
+}
+.before .ba-lbl { color: var(--red); }
+.after  .ba-lbl { color: var(--green); }
+.ba-items { display: flex; flex-direction: column; gap: .42rem; }
+.ba-i { font-size: .74rem; color: var(--ink2); display:flex; align-items:flex-start; gap:.48rem; line-height:1.5; }
+.ba-i.x::before { content:'✕'; color:var(--red); flex-shrink:0; }
+.ba-i.c::before { content:'✓'; color:var(--green); flex-shrink:0; }
+.ba-mid { text-align:center; font-size:1.1rem; color:var(--teal); font-weight:700; }
+
+.how-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 0; position: relative; margin-bottom: 2rem;
+}
+.how-row::before {
+  content:''; position:absolute; top:21px;
+  left:calc(12.5% + 10px); right:calc(12.5% + 10px);
+  height:1px;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  z-index:0;
+}
+.hw { text-align:center; position:relative; z-index:1; padding:0 .5rem; }
+.hw-c {
+  width:42px; height:42px; border-radius:50%;
+  background:#fff; border:1px solid var(--rim3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:.95rem; margin:0 auto .75rem;
+  box-shadow: var(--shadow);
+}
+.hw:nth-child(1) .hw-c { border-color:rgba(42,138,120,0.4); background:var(--teal-lt); }
+.hw:nth-child(2) .hw-c { border-color:rgba(184,150,42,0.4); background:var(--gold-lt); }
+.hw:nth-child(3) .hw-c { border-color:rgba(42,138,120,0.4); background:var(--teal-lt); }
+.hw:nth-child(4) .hw-c { border-color:rgba(184,150,42,0.4); background:var(--gold-lt); }
+.hw-name { font-size:.72rem; font-weight:600; color:var(--ink2); margin-bottom:.22rem; }
+.hw-desc { font-size:.63rem; color:var(--ink3); line-height:1.5; }
+
+.res-bar {
+  background: var(--panel); border: 1px solid var(--rim2);
+  border-radius: 9px; padding: 1.1rem 1.4rem;
+  display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap;
+}
+.rb-i { display:flex; align-items:center; gap:.45rem; font-size:.74rem; color:var(--ink2); }
+.rb-dot { width:7px; height:7px; border-radius:50%; }
+.rb-dot.g { background:var(--green); }
+.rb-dot.a { background:var(--amber); }
+.rb-dot.r { background:var(--red); }
+.rb-sep { width:1px; height:14px; background:var(--rim2); }
+
+/* ── ROADMAP ── */
+.rm-section { position:relative; z-index:1; }
+.rm-inner { max-width:1100px; margin:0 auto; padding:4.5rem 2rem; }
+.rm-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--rim2);
+  border-radius: 16px; overflow: hidden; border: 1px solid var(--rim2);
+  margin-top: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+.rm-ph { padding:1.8rem 2rem; position:relative; overflow:hidden; }
+.rm-ph.p1 {
+  background: linear-gradient(145deg, #fff 60%, rgba(42,138,120,0.03) 100%);
+}
+.rm-ph.p2 { background: var(--panel); }
+.rm-ph.p1::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  box-shadow: 0 2px 12px rgba(42,138,120,0.25);
+}
+.rm-ph.p2::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, rgba(42,138,120,0.25), rgba(184,150,42,0.25));
+}
+.rm-tag {
+  font-family: var(--sans);
+  font-size: .58rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .28em .82em; border-radius: 100px; margin-bottom: 1.3rem;
+}
+.p1 .rm-tag { color:var(--teal); background: linear-gradient(135deg, var(--teal-lt), rgba(184,150,42,0.06)); border:1px solid rgba(42,138,120,0.2); }
+.p2 .rm-tag { color:var(--ink3); background:var(--bg2); border:1px solid var(--rim2); }
+
+.rm-name {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem,2.5vw,1.95rem);
+  font-weight: 400; color: var(--ink);
+  letter-spacing: -.005em; line-height: 1.2; margin-bottom: .6rem;
+}
+.p2 .rm-name { color: var(--ink3); }
+.rm-sub { font-family: var(--sans); font-size:.82rem; color:var(--ink3); line-height:1.75; letter-spacing:.01em; margin-bottom:2rem; }
+.rm-list { display:flex; flex-direction:column; gap:.5rem; }
+.rl {
+  display: flex; align-items: center; gap: .65rem;
+  font-family: var(--sans); font-size: .8rem; color: var(--ink2); letter-spacing: .008em;
+}
+.rl::before { content:''; width:16px; height:1px; flex-shrink:0; }
+.p1 .rl::before { background: linear-gradient(90deg, var(--teal), var(--gold)); }
+.p2 .rl::before { background:var(--ink4); }
+.p2 .rl { color: var(--ink3); }
+.rm-tl {
+  margin-top:2rem; padding-top:1.4rem;
+  border-top:1px solid var(--rim2);
+  font-family: var(--sans); font-size:.68rem; letter-spacing:.04em;
+  display:flex; align-items:center; gap:.45rem;
+}
+.p1 .rm-tl { color:var(--green); }
+.p2 .rm-tl { color:var(--ink4); }
+.rm-tl::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.p1 .rm-tl::before { background:var(--green); box-shadow:0 0 8px rgba(30,122,94,0.45); }
+.p2 .rm-tl::before { background:var(--ink4); }
+
+/* ── CLOSING CTA ── */
+.cta-sec {
+  position: relative; z-index: 1;
+  text-align: center; padding: 4.5rem 2rem;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(42,138,120,0.07) 0%, transparent 70%),
+    linear-gradient(180deg, transparent 0%, rgba(42,138,120,0.03) 100%);
+}
+.cta-sec .sec-h { margin-bottom: .8rem; }
+.cta-sec .sec-p { margin: 0 auto 2.5rem; }
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--rim2);
+  padding: 1.8rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,0.7);
+}
+.ft-brand {
+  display: flex; align-items: center; gap: .5rem;
+  font-weight: 700; font-size: .82rem; color: var(--ink3);
+}
+.ft-copy { font-size: .6rem; letter-spacing: .1em; color: var(--ink4); text-transform: uppercase; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .65s var(--ease), transform .65s var(--ease);
+}
+.reveal.vis { opacity:1; transform:none; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  nav { padding:0 1.5rem; }
+  .nav-links { display:none; }
+  .hero-stats { flex-wrap:wrap; border-radius:12px; }
+  .narr-inner,.rm-grid,.ba-grid,.how-row { grid-template-columns:1fr; }
+  .cap-grid,.dp-body { grid-template-columns:1fr; }
+  .ba-mid { text-align:left; margin:.5rem 0; }
+  .how-row::before { display:none; }
+  .sec-wrap { padding:5rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- 光暈背景 -->
+<div class="ambient">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+</div>
+
+<!-- ══ 導覽列 ══ -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-mark">◈</div>
+    PolicyMind
+  </a>
+  <ul class="nav-links">
+    <li><a href="#governance-flow">治理流程</a></li>
+    <li><a href="#demo">功能展示</a></li>
+    <li><a href="#actions">行動輸出</a></li>
+    <li><a href="#roadmap">發展藍圖</a></li>
+  </ul>
+  <button class="nav-cta">預約展示 →</button>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-chip">AI-Augmented HR Governance</div>
+  <h1>Policy<span class="accent">Mind</span></h1>
+  <div class="hero-btns">
+    <a href="#governance-flow" class="btn-p">探索治理流程 →</a>
+    <a href="#demo" class="btn-g">查看功能展示</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hs-it"><div class="hs-n r">23</div><div class="hs-l">風險已偵測</div></div>
+    <div class="hs-it"><div class="hs-n a">47</div><div class="hs-l">差異已分類</div></div>
+    <div class="hs-it"><div class="hs-n t">6</div><div class="hs-l">法域已納管</div></div>
+    <div class="hs-it"><div class="hs-n g">128</div><div class="hs-l">制度已審查</div></div>
+  </div>
+</section>
+
+<!-- ══ 敘事定位帶 ══ -->
+<div class="narr-band">
+  <div class="narr-inner">
+    <div class="reveal">
+      <div class="sec-lbl">為什麼需要 PolicyMind</div>
+      <div class="narr-quote">
+        制度文件，<br>
+        不等於<em>治理能力</em>。
+      </div>
+      <p style="margin-top:1.4rem;font-size:.84rem;color:var(--ink3);line-height:1.85;letter-spacing:.012em;max-width:400px;">
+        集團橫跨不同產業與法域，制度差異是必要且正常的存在。問題不是差異本身，而是這些差異是否可解釋、是否受到管理、是否能支撐決策。PolicyMind 把 HR 從文件管理者，提升為制度治理的決策中樞。
+      </p>
+    </div>
+    <div class="shift-stack reveal" style="transition-delay:.12s">
+      <div class="shift"><div class="sf">被動等待問題浮現</div><div class="sa">→</div><div class="st">AI 主動偵測治理風險</div></div>
+      <div class="shift"><div class="sf">無法解釋各公司制度為何不同</div><div class="sa">→</div><div class="st">辨識差異來源，區分必要與風險</div></div>
+      <div class="shift"><div class="sf">依賴經驗直覺與開不完的會</div><div class="sa">→</div><div class="st">AI 整合意見，只對分歧點拍板</div></div>
+      <div class="shift"><div class="sf">修訂結束，後續各自為政</div><div class="sa">→</div><div class="st">治理決策直接轉化為行動輸出</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ AI HR Governance 框架 ══ -->
+<section class="sec-wrap" style="padding-bottom:0;">
+  <div class="reveal">
+    <div class="sec-lbl">AI HR Governance Framework</div>
+    <div class="sec-h">偵測外部變化，治理內部制度</div>
+    <div class="sec-p">PolicyMind 是 AI HR Governance 架構的制度治理層。HR Intelligence Engine 持續監測法規動態與外部訊號，一旦影響現行制度即觸發 PolicyMind 啟動治理。HR 團隊主動發起的修訂需求，同樣可直接進入，兩個入口，一套治理引擎。</div>
+  </div>
+
+  <div class="reveal" style="transition-delay:.1s;margin-top:1.8rem;">
+    <div style="display:grid;grid-template-columns:1fr 44px 1fr 44px 1fr;gap:0;align-items:stretch;">
+
+      <!-- HR Intelligence Engine -->
+      <div style="background:var(--panel);border:1px solid var(--rim2);border-radius:14px;padding:2rem;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),rgba(42,138,120,0.3));"></div>
+        <div style="font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:.7rem;">External Signals</div>
+        <div style="font-family:var(--serif);font-size:1.05rem;color:var(--ink);margin-bottom:.4rem;line-height:1.3;">HR Intelligence Engine</div>
+        <div style="font-size:.72rem;color:var(--ink3);margin-bottom:1.2rem;line-height:1.7;">持續監測外部環境，主動偵測影響現行制度的訊號</div>
+        <div style="display:flex;flex-direction:column;gap:.45rem;">
+          <div style="font-size:.71rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.6;"><span style="width:4px;height:4px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:.4rem;display:inline-block;"></span>法規修正與新函釋發布</div>
+          <div style="font-size:.71rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.6;"><span style="width:4px;height:4px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:.4rem;display:inline-block;"></span>勞動訴訟與判例動態</div>
+          <div style="font-size:.71rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.6;"><span style="width:4px;height:4px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:.4rem;display:inline-block;"></span>產業趨勢與同業制度參考</div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;padding:0 .2rem;">
+        <div style="font-size:.46rem;color:var(--teal);font-weight:700;letter-spacing:.04em;text-align:center;line-height:1.3;">AI<br>Trigger</div>
+        <div style="font-size:.9rem;color:var(--teal);text-align:center;">→</div>
+        <div style="width:1px;height:14px;background:var(--rim2);margin:.3rem auto;"></div>
+        <div style="font-size:.46rem;color:var(--gold2);font-weight:700;letter-spacing:.04em;text-align:center;line-height:1.3;">HR<br>Init.</div>
+        <div style="font-size:.9rem;color:var(--gold);text-align:center;">→</div>
+      </div>
+
+      <!-- PolicyMind centre -->
+      <div style="background:#fff;border:1px solid var(--rim3);border-radius:14px;padding:2rem;position:relative;overflow:hidden;box-shadow:var(--shadow);">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--gold));box-shadow:0 2px 10px rgba(42,138,120,0.18);"></div>
+        <div style="font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:linear-gradient(90deg,var(--teal),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.7rem;">Policy Governance</div>
+        <div style="font-family:var(--serif);font-size:1.2rem;color:var(--ink);margin-bottom:.4rem;">PolicyMind</div>
+        <div style="font-size:.72rem;color:var(--ink3);margin-bottom:1.2rem;line-height:1.7;">制度治理引擎，偵測風險、分析差異、支援決策</div>
+        <div style="display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.1rem;">
+          <div style="font-size:.71rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.6;"><span style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.4rem;display:inline-block;"></span>制度風險偵測與合規掃描</div>
+          <div style="font-size:.71rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.6;"><span style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.4rem;display:inline-block;"></span>跨公司制度差異治理分析</div>
+          <div style="font-size:.71rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.6;"><span style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.4rem;display:inline-block;"></span>AI 意見整合與決策支援</div>
+        </div>
+        <div style="padding-top:.9rem;border-top:1px solid var(--rim2);">
+          <div style="font-size:.58rem;color:var(--ink4);margin-bottom:.3rem;letter-spacing:.04em;">HR 主動發起的入口</div>
+          <div style="display:flex;gap:.35rem;flex-wrap:wrap;">
+            <span style="font-size:.58rem;background:var(--gold-lt);color:var(--gold2);border:1px solid rgba(184,150,42,0.22);border-radius:100px;padding:.18em .65em;">制度修訂需求</span>
+            <span style="font-size:.58rem;background:var(--gold-lt);color:var(--gold2);border:1px solid rgba(184,150,42,0.22);border-radius:100px;padding:.18em .65em;">例行健診排程</span>
+            <span style="font-size:.58rem;background:var(--gold-lt);color:var(--gold2);border:1px solid rgba(184,150,42,0.22);border-radius:100px;padding:.18em .65em;">跨公司對齊任務</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;padding:0 .2rem;">
+        <div style="font-size:.5rem;color:var(--gold);font-weight:700;letter-spacing:.08em;text-align:center;white-space:nowrap;">Govern</div>
+        <div style="font-size:1rem;color:var(--gold);">→</div>
+      </div>
+
+      <!-- Output -->
+      <div style="background:var(--panel);border:1px solid var(--rim2);border-radius:14px;padding:2rem;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),rgba(184,150,42,0.3));"></div>
+        <div style="font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);margin-bottom:.7rem;">HR Governance Action</div>
+        <div style="font-family:var(--serif);font-size:1.05rem;color:var(--ink);margin-bottom:.4rem;line-height:1.3;">行動輸出，推動落地</div>
+        <div style="font-size:.72rem;color:var(--ink3);margin-bottom:1.2rem;line-height:1.7;">治理決策直接轉化為可執行的輸出，形成完整閉環</div>
+        <div style="display:flex;flex-direction:column;gap:.45rem;">
+          <div style="font-size:.71rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.6;"><span style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.4rem;display:inline-block;"></span>修案簽呈草稿（含法源）</div>
+          <div style="font-size:.71rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.6;"><span style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.4rem;display:inline-block;"></span>HR 系統面調整清單</div>
+          <div style="font-size:.71rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.6;"><span style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.4rem;display:inline-block;"></span>全員公告與溝通範本</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 治理流程 — Stage Pipeline ══ -->
+<section class="sec-wrap" id="governance-flow">
+  <div class="reveal">
+    <div class="sec-lbl">Governance Flow</div>
+    <div class="sec-h">制度治理的完整流程</div>
+    <div class="sec-p">從文件上傳到行動輸出，五個階段構成完整的 Policy Governance 閉環。每一個治理決策都有流程可循，每一次修訂都有軌跡可追。</div>
+  </div>
+
+  <div class="reveal" style="transition-delay:.1s;margin-top:1.8rem;">
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--rim2);border-radius:14px;overflow:hidden;border:1px solid var(--rim2);box-shadow:var(--shadow-lg);position:relative;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--teal2) 25%,var(--ink3) 50%,var(--gold2) 75%,var(--gold));z-index:2;"></div>
+
+      <div style="background:#fff;padding:1.8rem 1.5rem;position:relative;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:1rem;">Stage 01 · Input</div>
+        <div style="font-size:1.5rem;margin-bottom:.8rem;">📥</div>
+        <div style="font-family:var(--serif);font-size:.95rem;color:var(--ink);margin-bottom:.4rem;line-height:1.3;">文件上傳</div>
+        <div style="font-size:.72rem;color:var(--ink3);line-height:1.72;">PDF、Word、Excel 批次上傳，支援多份規章同時處理，自動解析條款結構。</div>
+        <div style="margin-top:1rem;font-size:.58rem;font-weight:700;letter-spacing:.12em;color:var(--teal);text-transform:uppercase;">Input</div>
+      </div>
+
+      <div style="background:#fff;padding:1.8rem 1.5rem;border-left:1px solid var(--rim2);">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:1rem;">Stage 02 · AI Scan</div>
+        <div style="font-size:1.5rem;margin-bottom:.8rem;">🔍</div>
+        <div style="font-family:var(--serif);font-size:.95rem;color:var(--ink);margin-bottom:.4rem;line-height:1.3;">法規合規掃描</div>
+        <div style="font-size:.72rem;color:var(--ink3);line-height:1.72;">對照勞基法、性工法等現行法規，語義比對逐條標記：確定違法、疑似違法、建議確認。</div>
+        <div style="margin-top:1rem;font-size:.58rem;font-weight:700;letter-spacing:.12em;color:var(--teal);text-transform:uppercase;">AI Scan</div>
+      </div>
+
+      <div style="background:#fff;padding:1.8rem 1.5rem;border-left:1px solid var(--rim2);">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:1rem;">Stage 03 · AI Govern</div>
+        <div style="font-size:1.5rem;margin-bottom:.8rem;">⚖️</div>
+        <div style="font-family:var(--serif);font-size:.95rem;color:var(--ink);margin-bottom:.4rem;line-height:1.3;">差異治理分析</div>
+        <div style="font-size:.72rem;color:var(--ink3);line-height:1.72;">跨公司比對同一議題的差異，AI 區分法規必要差異、產業特性差異與潛在治理風險。</div>
+        <div style="margin-top:1rem;font-size:.58rem;font-weight:700;letter-spacing:.12em;color:var(--teal);text-transform:uppercase;">AI Govern</div>
+      </div>
+
+      <div style="background:#fff;padding:1.8rem 1.5rem;border-left:1px solid var(--rim2);position:relative;">
+        <div style="position:absolute;top:3px;right:0;bottom:0;left:0;background:linear-gradient(135deg,rgba(184,150,42,0.02),transparent);pointer-events:none;"></div>
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:1rem;">Stage 04 · AI Decide</div>
+        <div style="font-size:1.5rem;margin-bottom:.8rem;">💬</div>
+        <div style="font-family:var(--serif);font-size:.95rem;color:var(--ink);margin-bottom:.4rem;line-height:1.3;">AI 意見整合</div>
+        <div style="font-size:.72rem;color:var(--ink3);line-height:1.72;">向各角色自動發出情境問題，AI 彙整共識與分歧，總部只需對真正有爭議的點做最終拍板。</div>
+        <div style="margin-top:1rem;display:flex;align-items:center;gap:.4rem;">
+          <span style="font-size:.58rem;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;">AI Decide</span>
+          <span style="font-size:.5rem;background:var(--gold-lt);color:var(--gold2);border:1px solid rgba(184,150,42,0.22);border-radius:100px;padding:.12em .5em;font-weight:600;">核心能力</span>
+        </div>
+      </div>
+
+      <div style="background:#fff;padding:1.8rem 1.5rem;border-left:1px solid var(--rim2);">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:1rem;">Stage 05 · Act</div>
+        <div style="font-size:1.5rem;margin-bottom:.8rem;">🚀</div>
+        <div style="font-family:var(--serif);font-size:.95rem;color:var(--ink);margin-bottom:.4rem;line-height:1.3;">銜接後續行動</div>
+        <div style="font-size:.72rem;color:var(--ink3);line-height:1.72;">一鍵產出修案簽呈、系統調整清單、內部溝通範本，治理決策直接轉化為可執行輸出。</div>
+        <div style="margin-top:1rem;font-size:.58rem;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;">Action</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEMO PANEL ══ -->
+<div class="demo-outer reveal" id="demo">
+  <div class="demo-panel">
+    <div class="dp-bar">
+      <div class="dp-dot"></div><div class="dp-dot"></div><div class="dp-dot"></div>
+      <div class="dp-lbl">PolicyMind · 制度治理分析 · 工作規則 v4.2 ＋ 員工手冊 v3.1</div>
+      <div class="dp-live"><div class="dp-blink"></div>AI 分析中</div>
+    </div>
+    <div class="dp-body">
+      <div class="dp-side">
+        <div class="dps-lbl">合規掃描</div>
+        <div class="dps-row on">
+          <div class="dps-d r"></div>
+          <div class="dps-t"><b>高風險 · 3 項</b>確定違法條款</div>
+        </div>
+        <div class="dps-row">
+          <div class="dps-d a"></div>
+          <div class="dps-t"><b>中風險 · 8 項</b>疑似違法條款</div>
+        </div>
+        <div class="dps-row">
+          <div class="dps-d g"></div>
+          <div class="dps-t"><b>已通過 · 128 項</b>合規條款</div>
+        </div>
+        <div style="margin-top:1rem;padding:0 1.1rem;">
+          <div class="dps-lbl">差異治理</div>
+        </div>
+        <div class="dps-row">
+          <div class="dps-d a"></div>
+          <div class="dps-t"><b>47 處差異</b>已完成類型分類</div>
+        </div>
+        <div class="dps-row">
+          <div class="dps-d g"></div>
+          <div class="dps-t"><b>6 個法域</b>已納入分析脈絡</div>
+        </div>
+        <div style="margin-top:1rem;padding:0 1.1rem;">
+          <div class="dps-lbl">意見整合</div>
+        </div>
+        <div class="dps-row">
+          <div class="dps-d r"></div>
+          <div class="dps-t"><b>2 項分歧</b>需總部拍板</div>
+        </div>
+        <div class="dps-row">
+          <div class="dps-d g"></div>
+          <div class="dps-t"><b>AI 草稿</b>已備妥 5 份</div>
+        </div>
+      </div>
+      <div class="dp-main">
+        <div class="dpm-hd">
+          <div>
+            <div class="dpm-title">法規合規掃描 — 工作規則 §12–§34</div>
+            <div class="dpm-sub">已掃描 156 條款 · 完成時間 1m 23s · 信心度 94%</div>
+          </div>
+          <div class="dpm-badge r">3 項高風險</div>
+        </div>
+        <div class="dpm-list">
+          <div class="dpm-row er">
+            <div class="dpm-d r"></div>
+            <div class="dpm-txt">「試用期三個月不計入年資」與勞基法第 84-1 條牴觸
+              <div class="dpm-meta">工作規則 §12 · 確定違法 · 高優先 · 建議立即處理</div>
+            </div>
+          </div>
+          <div class="dpm-row wa">
+            <div class="dpm-d a"></div>
+            <div class="dpm-txt">「特休未休得取消」可能違反勞基法第 38 條精神
+              <div class="dpm-meta">員工手冊 §5.3 · 疑似違法 · 建議法務確認</div>
+            </div>
+          </div>
+          <div class="dpm-row wa">
+            <div class="dpm-d a"></div>
+            <div class="dpm-txt">加班申請程序：工作規則「口頭同意」vs 員工手冊「系統簽核」衝突
+              <div class="dpm-meta">差異治理分析 → 類型：作業流程差異 · 建議集團統一</div>
+            </div>
+          </div>
+          <div class="dpm-row ok">
+            <div class="dpm-d g"></div>
+            <div class="dpm-txt">加班費計算方式符合現行法規要求
+              <div class="dpm-meta">薪資辦法 §8 · 通過審查 ✓</div>
+            </div>
+          </div>
+          <div class="dpm-row in">
+            <div class="dpm-d b"></div>
+            <div class="dpm-txt">遠端工作職災認定範圍，建議依職安法修正草案提前更新
+              <div class="dpm-meta">HR Intelligence Engine 觸發 · 查看 AI 修訂草稿 →</div>
+            </div>
+          </div>
+        </div>
+        <div class="dpm-acts">
+          <div class="dpm-act">
+            <div class="dpm-al">修案簽呈</div>
+            <div class="dpm-at">產出修案簽呈草稿（含法源依據與前後對照）</div>
+            <div class="dpm-aa">產出草稿 →</div>
+          </div>
+          <div class="dpm-act">
+            <div class="dpm-al">意見整合</div>
+            <div class="dpm-at">發起跨公司意見整合，AI 彙整決策清單</div>
+            <div class="dpm-aa">啟動 →</div>
+          </div>
+          <div class="dpm-act">
+            <div class="dpm-al">法務轉介</div>
+            <div class="dpm-at">標記高風險條款，轉介法務確認</div>
+            <div class="dpm-aa">轉介 →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 差異治理分析 ══ -->
+<section class="sec-wrap" style="padding-top:0;">
+  <div class="reveal">
+    <div class="sec-lbl">Policy Variance Analysis</div>
+    <div class="sec-h">每一處差異，都需要一個理由</div>
+    <div class="sec-p">AI 在分析跨公司制度差異時，同時考量產業法規、當地勞動法令、法域差異與集團治理原則，將每一處差異歸類為四種類型，讓治理決策有所依據。</div>
+  </div>
+
+  <div class="reveal" style="transition-delay:.1s;margin-top:1.5rem;">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rim2);border-radius:14px;overflow:hidden;border:1px solid var(--rim2);box-shadow:var(--shadow);">
+
+      <div style="background:#fff;padding:1.6rem 1.4rem;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem;">Regulatory Variance</div>
+        <div style="font-family:var(--serif);font-size:.95rem;color:var(--ink);margin-bottom:.45rem;">法規必要差異</div>
+        <div style="font-size:.72rem;color:var(--ink3);line-height:1.75;margin-bottom:.9rem;">各地勞動法令不同所產生的差異，屬於合規必要，AI 標記為無需統一。</div>
+        <div style="background:var(--teal-lt);border-radius:7px;padding:.65rem .85rem;border-left:2px solid var(--teal);">
+          <div style="font-size:.52rem;font-weight:700;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem;">範例</div>
+          <div style="font-size:.69rem;color:var(--ink2);line-height:1.65;">台灣子公司特休 3 天起算；中國依《勞動法》5 天起算。差異來源為法規，合規必要。</div>
+        </div>
+      </div>
+
+      <div style="background:#fff;padding:1.6rem 1.4rem;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;">Industry Variance</div>
+        <div style="font-family:var(--serif);font-size:.95rem;color:var(--ink);margin-bottom:.45rem;">產業特性差異</div>
+        <div style="font-size:.72rem;color:var(--ink3);line-height:1.75;margin-bottom:.9rem;">因產業性質或營運模式不同所產生的差異，屬於合理範圍，AI 標記為可保留。</div>
+        <div style="background:var(--gold-lt);border-radius:7px;padding:.65rem .85rem;border-left:2px solid var(--gold);">
+          <div style="font-size:.52rem;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem;">範例</div>
+          <div style="font-size:.69rem;color:var(--ink2);line-height:1.65;">製造廠設有輪班加給；服務業子公司無輪班制度，無此條款。產業特性決定差異。</div>
+        </div>
+      </div>
+
+      <div style="background:#fff;padding:1.6rem 1.4rem;">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:.5rem;">Operational Variance</div>
+        <div style="font-family:var(--serif);font-size:.95rem;color:var(--ink);margin-bottom:.45rem;">作業流程差異</div>
+        <div style="font-size:.72rem;color:var(--ink3);line-height:1.75;margin-bottom:.9rem;">因執行方式不同形成的差異，AI 標記為需評估是否影響集團一致性原則。</div>
+        <div style="background:var(--bg2);border-radius:7px;padding:.65rem .85rem;border-left:2px solid var(--ink4);">
+          <div style="font-size:.52rem;font-weight:700;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem;">範例</div>
+          <div style="font-size:.69rem;color:var(--ink2);line-height:1.65;">A 公司加班系統事前簽核；B 公司口頭同意。無法規依據，需評估是否統一。</div>
+        </div>
+      </div>
+
+      <div style="background:rgba(192,57,43,0.04);padding:1.6rem 1.4rem;border-left:2px solid var(--red);">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:.5rem;">Governance Risk</div>
+        <div style="font-family:var(--serif);font-size:.95rem;color:var(--ink);margin-bottom:.45rem;">潛在治理風險</div>
+        <div style="font-size:.72rem;color:var(--ink3);line-height:1.75;margin-bottom:.9rem;">無法以法規或產業因素解釋的差異，AI 標記為需集團層級介入審視。</div>
+        <div style="background:rgba(192,57,43,0.06);border-radius:7px;padding:.65rem .85rem;border-left:2px solid var(--red);">
+          <div style="font-size:.52rem;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem;">範例</div>
+          <div style="font-size:.69rem;color:var(--ink2);line-height:1.65;">C 子公司「試用期不計年資」違反勞基法，且其他子公司均無此條款。需集團介入修正。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ 意見整合引擎 ══ -->
+<section class="cons-section">
+  <div class="cons-inner" style="padding-top:0;">
+    <div class="reveal">
+      <div class="sec-lbl">Stage 04 · AI 意見整合</div>
+      <div class="sec-h">每次修訂，不再是開不完的會</div>
+    </div>
+    <div class="cons-card reveal" style="transition-delay:.1s;margin-top:2rem;">
+      <div class="cc-top">
+        <div class="cc-chip">Policy Decision Support</div>
+        <div class="cc-title">蒐集意見這件事，本來不該這麼累</div>
+        <div class="cc-body">
+          集團旗下百個單位、十幾種角色，每次修一條規章都要廣發 email、等人回覆、人工彙整。PolicyMind 把這個過程變成：AI 問對的人對的問題，人只需要回答自己那塊，最後把結論丟回給總部決策。
+        </div>
+      </div>
+      <div class="cc-main">
+
+        <div class="ba-grid" style="margin-bottom:1.8rem;">
+          <div class="ba-col before">
+            <div class="ba-lbl">現在的做法</div>
+            <div class="ba-items">
+              <div class="ba-i x">發空白表格，沒人知道要寫什麼</div>
+              <div class="ba-i x">意見散落 email，無法比較</div>
+              <div class="ba-i x">還沒整理完，會議就先開了</div>
+              <div class="ba-i x">靠最有聲量的人決定</div>
+            </div>
+          </div>
+          <div class="ba-mid">→</div>
+          <div class="ba-col after">
+            <div class="ba-lbl">導入 PolicyMind</div>
+            <div class="ba-items">
+              <div class="ba-i c">每人只收到跟自己有關的問題，5 分鐘回完</div>
+              <div class="ba-i c">AI 自動分類：共識 / 分歧 / 待決</div>
+              <div class="ba-i c">總部只看一張摘要，只討論真正有爭議的點</div>
+              <div class="ba-i c">每個意見有角色歸屬，決策過程可追溯</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="how-row" style="margin-bottom:1.8rem;">
+          <div class="hw"><div class="hw-c">📋</div><div class="hw-name">AI 讀懂草稿</div><div class="hw-desc">解析修訂維度：流程、金額、適用對象或例外條款</div></div>
+          <div class="hw"><div class="hw-c">🎯</div><div class="hw-name">問對的人</div><div class="hw-desc">廠區 HRBP 回答現場可行性，CB 回答成本影響，不交疊</div></div>
+          <div class="hw"><div class="hw-c">🧩</div><div class="hw-name">AI 整理結果</div><div class="hw-desc">自動分類共識、有條件同意、分歧，列出爭議摘要</div></div>
+          <div class="hw"><div class="hw-c">📤</div><div class="hw-name">決策清單回傳</div><div class="hw-desc">總部收到的不是二十份 email，而是一張需拍板清單</div></div>
+        </div>
+
+        <!-- Role question examples -->
+        <div style="margin-bottom:1.5rem;">
+          <div style="font-size:.56rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:.8rem;">各角色收到的問題範例 — 以「加班改為系統事前簽核」為例</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;">
+            <div style="background:var(--panel);border:1px solid var(--rim2);border-radius:10px;padding:.9rem 1rem;">
+              <div style="font-size:.52rem;font-weight:700;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">🏭 廠區 HRBP</div>
+              <div style="font-size:.7rem;color:var(--ink2);line-height:1.65;">緊急生產時，通常提前多久知道要加班？事前系統簽核，有沒有來不及操作的情況？</div>
+              <div style="font-size:.58rem;color:var(--ink4);margin-top:.4rem;line-height:1.5;">💡 了解現場執行阻力的早期訊號</div>
+            </div>
+            <div style="background:var(--panel);border:1px solid var(--rim2);border-radius:10px;padding:.9rem 1rem;">
+              <div style="font-size:.52rem;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">💰 關係企業 CB</div>
+              <div style="font-size:.7rem;color:var(--ink2);line-height:1.65;">每月加班單有多少比例是事後補填的？改成事前簽核，薪資結帳流程需要調整什麼？</div>
+              <div style="font-size:.58rem;color:var(--ink4);margin-top:.4rem;line-height:1.5;">💡 量化改制前後對薪資作業的實際影響</div>
+            </div>
+            <div style="background:var(--panel);border:1px solid var(--rim2);border-radius:10px;padding:.9rem 1rem;">
+              <div style="font-size:.52rem;font-weight:700;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">🏢 總部 HRBP</div>
+              <div style="font-size:.7rem;color:var(--ink2);line-height:1.65;">員工已提供勞務但未事前簽核，雇主是否仍有給付義務？此規定是否適用所有子公司？</div>
+              <div style="font-size:.58rem;color:var(--ink4);margin-top:.4rem;line-height:1.5;">💡 確認法律站得住腳與集團一致性的邊界</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decision summary -->
+        <div style="background:var(--panel);border:1px solid var(--rim2);border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1.2rem;">
+          <div style="font-size:.56rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:.85rem;">🧩 AI 彙整結果 — 總部收到的決策清單</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;margin-bottom:.85rem;">
+            <div style="background:var(--green-lt);border:1px solid rgba(30,122,94,0.15);border-radius:8px;padding:.7rem .85rem;">
+              <div style="font-size:.52rem;font-weight:700;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">✓ 共識（無需討論）</div>
+              <div style="font-size:.68rem;color:var(--ink2);line-height:1.65;">系統簽核方向正確，11 位均同意。正式工適用；派遣人員暫排除另案處理。薪資流程需 IT 同步調整。</div>
+            </div>
+            <div style="background:var(--amber-lt);border:1px solid rgba(192,124,26,0.15);border-radius:8px;padding:.7rem .85rem;">
+              <div style="font-size:.52rem;font-weight:700;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">△ 有條件同意</div>
+              <div style="font-size:.68rem;color:var(--ink2);line-height:1.65;">輪班制廠區申請「2 小時內補簽有效」例外條款（3 廠提出）。季節性旺季申請彈性處理。</div>
+            </div>
+            <div style="background:var(--red-lt);border:1px solid rgba(192,57,43,0.15);border-radius:8px;padding:.7rem .85rem;">
+              <div style="font-size:.52rem;font-weight:700;color:var(--red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">⚡ 需總部拍板</div>
+              <div style="font-size:.68rem;color:var(--ink2);line-height:1.65;">緊急補簽例外條款要不要給？各關係企業適用時間點要統一還是分階段？</div>
+            </div>
+          </div>
+          <div style="font-size:.66rem;color:var(--ink3);line-height:1.7;border-top:1px solid var(--rim2);padding-top:.72rem;">
+            AI 從 13 份回覆中自動整理。<strong style="color:var(--ink2);">總部只需要開一次會，討論這兩個分歧點</strong>——不是把二十份 email 從頭讀一遍。
+          </div>
+        </div>
+
+        <div class="res-bar">
+          <div class="rb-i"><div class="rb-dot g"></div>共識 3 項</div>
+          <div class="rb-sep"></div>
+          <div class="rb-i"><div class="rb-dot a"></div>有條件同意 2 項</div>
+          <div class="rb-sep"></div>
+          <div class="rb-i"><div class="rb-dot r"></div>需拍板 2 項</div>
+          <div class="rb-sep" style="margin-left:auto"></div>
+          <div class="rb-i" style="font-size:.62rem;color:var(--ink4)">已回覆 11 / 13 人</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HR 行動輸出 ══ -->
+<section class="sec-wrap" id="actions" style="padding-top:0;">
+  <div class="reveal">
+    <div class="sec-lbl">Stage 05 · HR Governance Action</div>
+    <div class="sec-h">治理決策，無縫轉化為行動</div>
+    <div class="sec-p">分析結束不是終點。PolicyMind 無縫銜接修訂、系統、溝通三條流程，每一個治理決策都有對應的輸出，每一次修訂都留有完整稽核軌跡。</div>
+  </div>
+
+  <div class="reveal" style="transition-delay:.1s;margin-top:1.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rim2);border-radius:14px 14px 0 0;overflow:hidden;border:1px solid var(--rim2);border-bottom:none;box-shadow:var(--shadow);">
+
+    <div style="background:#fff;padding:2rem 1.8rem;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--teal2));"></div>
+      <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:.7rem;">Action 01 · 修訂</div>
+      <div style="font-size:1.4rem;margin-bottom:.65rem;">📋</div>
+      <div style="font-family:var(--serif);font-size:1rem;color:var(--ink);margin-bottom:.4rem;">上簽呈修案</div>
+      <div style="font-size:.74rem;color:var(--ink3);line-height:1.78;">自動產出修案簽呈草稿，含問題摘要、修訂前後對照表、法源依據、建議生效日期。</div>
+      <div style="margin-top:1rem;font-size:.7rem;color:var(--teal);font-weight:600;cursor:pointer;">產出簽呈草稿 →</div>
+    </div>
+
+    <div style="background:#fff;padding:2rem 1.8rem;position:relative;overflow:hidden;border-left:1px solid var(--rim2);">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal2),var(--gold2));"></div>
+      <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:.7rem;">Action 02 · 系統</div>
+      <div style="font-size:1.4rem;margin-bottom:.65rem;">⚙️</div>
+      <div style="font-family:var(--serif);font-size:1rem;color:var(--ink);margin-bottom:.4rem;">系統面調整清單</div>
+      <div style="font-size:.74rem;color:var(--ink3);line-height:1.78;">自動列出需同步調整的 HR 系統設定，包含假別天數、薪資邏輯、申請表單欄位，標記負責單位。</div>
+      <div style="margin-top:1rem;font-size:.7rem;color:var(--teal);font-weight:600;cursor:pointer;">匯出調整清單 →</div>
+    </div>
+
+    <div style="background:#fff;padding:2rem 1.8rem;position:relative;overflow:hidden;border-left:1px solid var(--rim2);">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold2),var(--gold));"></div>
+      <div style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;">Action 03 · 溝通</div>
+      <div style="font-size:1.4rem;margin-bottom:.65rem;">📣</div>
+      <div style="font-family:var(--serif);font-size:1rem;color:var(--ink);margin-bottom:.4rem;">內部溝通範本</div>
+      <div style="font-size:.74rem;color:var(--ink3);line-height:1.78;">依修訂內容生成全員公告、主管說明重點、FAQ，可依受眾切換版本：全員 / 主管 / 特定部門。</div>
+      <div style="margin-top:1rem;font-size:.7rem;color:var(--teal);font-weight:600;cursor:pointer;">生成溝通素材 →</div>
+    </div>
+
+  </div>
+
+  <!-- Audit trail bar -->
+  <div class="reveal" style="transition-delay:.15s;">
+    <div style="background:var(--panel);border:1px solid var(--rim2);border-top:none;border-radius:0 0 14px 14px;padding:1.2rem 1.8rem;display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:1.2rem;align-items:center;">
+      <div style="font-size:.56rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);white-space:nowrap;">稽核軌跡</div>
+      <div style="font-size:.7rem;color:var(--ink2);display:flex;align-items:center;gap:.5rem;line-height:1.55;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>工作規則 v4.2 · 2024-11-01 · 觸發：勞基法修正 · 修訂人：張小華</div>
+      <div style="font-size:.7rem;color:var(--ink2);display:flex;align-items:center;gap:.5rem;line-height:1.55;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>員工手冊 v3.1 · 2023-06-15 · 觸發：主動優化 · 修訂人：李美玲</div>
+      <div style="font-size:.7rem;color:var(--amber);display:flex;align-items:center;gap:.5rem;line-height:1.55;"><span style="width:5px;height:5px;border-radius:50%;background:var(--amber);flex-shrink:0;"></span>薪資辦法 v2.0 · 距上次修訂 1,247 天 ⚠️ 建議進行例行審查</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 能力成熟度 ══ -->
+<div class="rm-section" id="roadmap">
+  <div class="rm-inner">
+    <div class="reveal">
+      <div class="sec-lbl">能力成熟度 Roadmap</div>
+      <div class="sec-h">治理基礎，再到決策智能</div>
+      <div class="sec-p">Phase 1 建立制度治理的核心能力；Phase 2 在資料整合後，進化為具預測能力的 HR 決策智能平台。</div>
+    </div>
+    <div class="rm-grid reveal" style="transition-delay:.1s;margin-top:2rem;">
+      <div class="rm-ph p1">
+        <div class="rm-tag">Phase 1 · 治理基礎層</div>
+        <div class="rm-name">Policy Governance<br>Core</div>
+        <div class="rm-sub">建立制度治理核心能力，AI 在閉環中同步提供治理洞察與修訂建議。</div>
+        <div class="rm-list">
+          <div class="rl">法規合規掃描，三級風險標記</div>
+          <div class="rl">跨公司差異治理分析與分類</div>
+          <div class="rl">AI 意見整合與決策清單輸出</div>
+          <div class="rl">修訂 · 系統 · 溝通三軌輸出</div>
+          <div class="rl">AI 治理洞察與修訂草稿建議</div>
+        </div>
+        <div class="rm-tl">準備推進 · Phase 1</div>
+      </div>
+      <div class="rm-ph p2">
+        <div class="rm-tag">Phase 2 · 決策智能層</div>
+        <div class="rm-name">Policy Decision<br>Intelligence</div>
+        <div class="rm-sub">串接員工主檔，從治理進化為衝擊預測：修一條制度前，先模擬它對多少人、哪些系統、多少成本產生影響。</div>
+        <div class="rm-list">
+          <div class="rl">依人員結構模擬制度修訂影響範圍</div>
+          <div class="rl">跨公司調整的成本與薪資衝擊試算</div>
+          <div class="rl">制度健康度監控與週期性健診</div>
+        </div>
+        <div class="rm-tl">串接 HR 主檔資料後推進</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CTA ══ -->
+<section class="cta-sec reveal">
+  <div class="sec-lbl" style="justify-content:center;">立即開始</div>
+  <div class="sec-h">從制度管理，到制度治理</div>
+  <div class="sec-p" style="margin:0 auto 2.5rem;">讓每一處制度差異都有依據，讓每一個治理決策都可追溯。</div>
+  <div class="hero-btns">
+    <a href="#" class="btn-p">預約產品展示 →</a>
+    <a href="#" class="btn-g">了解更多</a>
+  </div>
+</section>
+
+<!-- ══ 頁尾 ══ -->
+<footer>
+  <div class="ft-brand">
+    <div class="nav-mark" style="width:22px;height:22px;font-size:.55rem;">◈</div>
+    PolicyMind
+  </div>
+  <div class="ft-copy">AI 驅動人資制度治理平台 · 企業概念展示 · 2026</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI HR Governance Framework</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:          #f2f8f6;
+  --white:       #ffffff;
+
+  --teal:        #2a8a78;
+  --teal-deep:   #1a7a6a;
+  --teal-mid:    #2a9882;
+  --teal-soft:   #4db8a2;
+  --teal-lt:     #d4f0ea;
+  --glow-t:      rgba(42,138,120,0.13);
+
+  --gold:        #b8962a;
+  --gold-deep:   #9e7a1a;
+  --gold-mid:    #c49a28;
+  --gold-soft:   #dab840;
+  --gold-lt:     #fdf4dc;
+  --glow-g:      rgba(184,150,42,0.10);
+
+  --sky-deep:    #1a6b9e;
+  --sky-mid:     #2a8ece;
+  --sky-lt:      #d4ecfb;
+
+  --violet-deep: #5a3a9e;
+  --violet-mid:  #7a5abe;
+  --violet-lt:   #ece6fb;
+
+  --ink:         #0c1e1a;
+  --ink2:        #254740;
+  --ink3:        #527068;
+  --ink4:        #9ab8b0;
+  --ink5:        #c5d9d4;
+
+  --rim:         rgba(42,138,120,0.11);
+  --rim2:        rgba(42,138,120,0.20);
+  --shadow:      0 2px 24px rgba(14,50,44,0.07);
+  --shadow-lg:   0 8px 56px rgba(14,50,44,0.11);
+  --shadow-xl:   0 20px 80px rgba(14,50,44,0.13);
+
+  --sans:  'Inter', 'Noto Sans TC', sans-serif;
+  --serif: 'DM Serif Display', serif;
+  --ease:  cubic-bezier(0.16,1,0.3,1);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: 0.015em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── AMBIENT ORBS ── */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.orb1 { width:700px; height:700px; background:var(--glow-t); top:-180px; left:-160px; opacity:.85; }
+.orb2 { width:500px; height:500px; background:var(--glow-g); top:35%; right:-120px; opacity:.70; animation-delay:-9s; }
+.orb3 { width:400px; height:400px; background:var(--glow-t); bottom:-80px; left:38%; opacity:.45; animation-delay:-16s; }
+.orb4 { width:300px; height:300px; background:rgba(42,142,206,0.07); top:10%; right:30%; opacity:.60; animation-delay:-5s; }
+
+@keyframes drift {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(28px,18px) scale(1.05); }
+}
+
+/* subtle grid texture */
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    linear-gradient(rgba(42,138,120,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42,138,120,0.022) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* ── PAGE ── */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 56px 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+/* ── HEADER ── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.eyebrow {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--teal-mid);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content:'◈';
+  font-size: 8px;
+  color: var(--teal-soft);
+}
+
+.title-main {
+  font-family: var(--serif);
+  font-size: 38px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.title-main .grad {
+  background: linear-gradient(110deg, var(--teal) 0%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--ink3);
+  margin-top: 7px;
+  font-style: italic;
+  letter-spacing: 0.025em;
+  line-height: 1.65;
+}
+
+.header-badge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.badge {
+  background: linear-gradient(135deg, var(--teal-deep), var(--teal));
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 100px;
+  box-shadow: 0 2px 12px rgba(42,138,120,0.28);
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--teal-soft) 0%, var(--gold-mid) 50%, transparent 100%);
+  opacity: 0.30;
+}
+
+/* ── LOOP DIAGRAM ── */
+.loop-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.loop-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink4);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.loop-label::after {
+  content:'';
+  flex:1;
+  height: 1px;
+  background: var(--rim);
+}
+
+/* Nodes row */
+.loop-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--white);
+  border: 1px solid var(--rim2);
+  border-radius: 20px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* glow inside card */
+.loop-row::before {
+  content:'';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 80% at 0% 50%, rgba(42,138,120,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 80% at 100% 50%, rgba(184,150,42,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.loop-node {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 10px;
+  border-radius: 14px;
+  position: relative;
+  transition: transform 0.25s var(--ease);
+  cursor: default;
+}
+.loop-node:hover { transform: translateY(-2px); }
+
+.loop-node.n-ext  { background: linear-gradient(145deg, rgba(42,142,206,0.07), rgba(42,142,206,0.02)); border:1px solid rgba(42,142,206,0.15); }
+.loop-node.n-int  { background: linear-gradient(145deg, rgba(42,152,130,0.07), rgba(42,152,130,0.02)); border:1px solid rgba(42,152,130,0.15); }
+.loop-node.n-kb   { background: linear-gradient(145deg, rgba(122,90,190,0.07), rgba(122,90,190,0.02)); border:1px solid rgba(122,90,190,0.13); }
+.loop-node.n-gov  { background: linear-gradient(145deg, rgba(184,150,42,0.07), rgba(184,150,42,0.02));  border:1px solid rgba(184,150,42,0.15); }
+.loop-node.n-act  { background: linear-gradient(145deg, rgba(42,138,120,0.10), rgba(58,110,94,0.05));   border:1px solid rgba(42,138,120,0.22); }
+
+.node-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 2px 10px rgba(14,50,44,0.08);
+}
+.n-ext .node-icon  { background: linear-gradient(135deg, var(--sky-lt), #fff); }
+.n-int .node-icon  { background: linear-gradient(135deg, var(--teal-lt), #fff); }
+.n-kb  .node-icon  { background: linear-gradient(135deg, var(--violet-lt), #fff); }
+.n-gov .node-icon  { background: linear-gradient(135deg, var(--gold-lt), #fff); }
+.n-act .node-icon  { background: linear-gradient(135deg, var(--teal-deep), var(--teal)); box-shadow: 0 4px 16px rgba(42,138,120,0.30); }
+
+.node-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+.n-ext .node-name  { color: var(--sky-deep); }
+.n-int .node-name  { color: var(--teal-deep); }
+.n-kb  .node-name  { color: var(--violet-deep); }
+.n-gov .node-name  { color: var(--gold-deep); }
+.n-act .node-name  { color: var(--teal-deep); }
+
+.node-sub {
+  font-size: 9.5px;
+  color: var(--ink3);
+  font-weight: 300;
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+/* Arrow between nodes */
+.loop-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0 10px;
+  flex-shrink: 0;
+}
+.arrow-line {
+  width: 28px;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--teal-soft), var(--gold-soft));
+  opacity: 0.5;
+}
+.arrow-head {
+  font-size: 11px;
+  color: var(--ink4);
+  line-height: 1;
+  margin-top: -6px;
+}
+
+/* feedback arc below */
+.feedback-arc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px 0;
+}
+.arc-line {
+  flex: 1;
+  height: 1px;
+  border-bottom: 1.5px dashed rgba(122,90,190,0.25);
+  position: relative;
+}
+.arc-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: linear-gradient(135deg, rgba(122,90,190,0.06), rgba(42,152,130,0.04));
+  border: 1px solid rgba(122,90,190,0.14);
+  border-radius: 100px;
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--violet-deep);
+  white-space: nowrap;
+}
+.arc-badge-icon { font-size: 11px; }
+
+/* ── TAGLINE ── */
+.tagline {
+  text-align: center;
+  padding: 4px 0 0;
+}
+.tagline-text {
+  font-size: 12.5px;
+  color: var(--ink3);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.8;
+  letter-spacing: 0.025em;
+}
+.tagline-text strong {
+  color: var(--ink2);
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* ── ENGINE CARDS ── */
+.engines-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.engine-card {
+  background: var(--white);
+  border: 1px solid var(--rim);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.engine-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* inner glow */
+.engine-card::before {
+  content:'';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 18px;
+}
+.engine-card.teal::before {
+  background: radial-gradient(ellipse 80% 60% at 0% 0%, rgba(42,138,120,0.06) 0%, transparent 60%);
+}
+.engine-card.gold::before {
+  background: radial-gradient(ellipse 80% 60% at 100% 0%, rgba(184,150,42,0.06) 0%, transparent 60%);
+}
+
+.card-top {
+  height: 3.5px;
+  border-radius: 18px 18px 0 0;
+}
+.card-top.teal {
+  background: linear-gradient(90deg, var(--teal-deep), var(--teal-soft), rgba(42,152,130,0.15));
+  box-shadow: 0 2px 12px rgba(42,138,120,0.18);
+}
+.card-top.gold {
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold-soft), rgba(184,150,42,0.15));
+  box-shadow: 0 2px 12px rgba(184,150,42,0.15);
+}
+
+.card-inner {
+  padding: 24px 26px 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card-role-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+.card-role-tag.teal { background: var(--teal-lt); color: var(--teal-deep); border: 1px solid rgba(42,138,120,0.18); }
+.card-role-tag.gold { background: var(--gold-lt); color: var(--gold-deep); border: 1px solid rgba(184,150,42,0.18); }
+
+.card-title {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.card-desc {
+  font-size: 12.5px;
+  color: var(--ink3);
+  font-weight: 300;
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+  border-left: 2px solid var(--rim2);
+  padding-left: 14px;
+}
+
+.card-positioning {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.pos-chip {
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.pos-chip.neutral { background: rgba(42,138,120,0.05); color: var(--ink2); border:1px solid var(--rim); }
+.pos-chip.teal    { background: var(--teal-lt); color: var(--teal-deep); border:1px solid rgba(42,138,120,0.15); }
+.pos-chip.gold    { background: var(--gold-lt); color: var(--gold-deep); border:1px solid rgba(184,150,42,0.15); }
+.pos-chip.accent  { background: linear-gradient(135deg, var(--teal-deep), var(--teal)); color:#fff; border:none; font-weight:600; }
+.pos-chip.accent-g{ background: linear-gradient(135deg, var(--gold-deep), var(--gold-mid)); color:#fff; border:none; font-weight:600; }
+
+.pos-arrow { font-size: 12px; color: var(--ink4); }
+
+/* ── FOOTER ── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9.5px;
+  color: var(--ink4);
+  padding-top: 4px;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink3);
+  font-weight: 500;
+}
+.footer-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal-soft), var(--gold-mid));
+  box-shadow: 0 0 6px rgba(42,138,120,0.30);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(14px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.page > * { animation: fadeUp 0.6s var(--ease) both; }
+.page > *:nth-child(1) { animation-delay: 0.04s; }
+.page > *:nth-child(2) { animation-delay: 0.10s; }
+.page > *:nth-child(3) { animation-delay: 0.17s; }
+.page > *:nth-child(4) { animation-delay: 0.26s; }
+.page > *:nth-child(5) { animation-delay: 0.36s; }
+.page > *:nth-child(6) { animation-delay: 0.46s; }
+</style>
+</head>
+<body>
+
+<!-- Ambient orbs -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="orb orb4"></div>
+
+<div class="page">
+
+  <!-- ① HEADER -->
+  <div class="header">
+    <div>
+      <div class="eyebrow">人資策略 · AI 治理架構</div>
+      <div class="title-main">
+        <span class="grad">AI HR Governance</span> Framework
+      </div>
+      <div class="title-sub">AI 驅動的人資治理架構 — 從外部訊號到人資行動</div>
+    </div>
+    <div class="header-badge">
+    </div>
+  </div>
+
+  <!-- ② DIVIDER -->
+  <div class="divider"></div>
+
+  <!-- ③ LOOP DIAGRAM -->
+  <div class="loop-section">
+
+    <div class="loop-label">AI HR Governance Loop</div>
+
+    <div class="loop-row">
+
+      <!-- Node 1: External Signals -->
+      <div class="loop-node n-ext">
+        <div class="node-icon">📡</div>
+        <div class="node-name">外部訊號<br>External Signals</div>
+        <div class="node-sub">法規 · 市場 · 趨勢<br>ESG · 政策環境</div>
+      </div>
+
+      <div class="loop-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-head">›</div>
+      </div>
+
+      <!-- Node 2: HR Intelligence Engine -->
+      <div class="loop-node n-int">
+        <div class="node-icon">🧠</div>
+        <div class="node-name">HR Intelligence<br>Engine</div>
+        <div class="node-sub">AI 分析<br>人資洞察</div>
+      </div>
+
+      <div class="loop-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-head">›</div>
+      </div>
+
+      <!-- Node 3: HR Knowledge Base -->
+      <div class="loop-node n-kb">
+        <div class="node-icon">📚</div>
+        <div class="node-name">HR Knowledge<br>Base</div>
+        <div class="node-sub">知識累積<br>制度文件</div>
+      </div>
+
+      <div class="loop-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-head">›</div>
+      </div>
+
+      <!-- Node 4: Policy Mind -->
+      <div class="loop-node n-gov">
+        <div class="node-icon">🏛️</div>
+        <div class="node-name">Policy Mind</div>
+        <div class="node-sub">制度治理<br>政策決策</div>
+      </div>
+
+      <div class="loop-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-head">›</div>
+      </div>
+
+      <!-- Node 5: HR Action -->
+      <div class="loop-node n-act">
+        <div class="node-icon" style="font-size:22px;color:#fff;">⚡</div>
+        <div class="node-name">HR 行動</div>
+        <div class="node-sub">制度修訂<br>政策公告</div>
+      </div>
+
+    </div>
+
+    <!-- Feedback arc -->
+    <div class="feedback-arc">
+      <div class="arc-line"></div>
+      <div class="arc-badge">
+        <span class="arc-badge-icon">🔄</span>
+        HR 行動回饋至 HR Knowledge Base，形成持續學習的 AI 治理循環
+      </div>
+      <div class="arc-line"></div>
+    </div>
+
+  </div>
+
+  <!-- ④ TAGLINE -->
+  <div class="tagline">
+    <div class="tagline-text">
+      透過 AI 將<strong>外部訊號</strong>、<strong>知識</strong>與<strong>制度治理</strong>串連，形成持續學習的人資治理循環。
+    </div>
+  </div>
+
+  <!-- ⑤ ENGINE CARDS -->
+  <div class="engines-row">
+
+    <!-- LEFT: HR Intelligence Engine -->
+    <div class="engine-card teal">
+      <div class="card-top teal"></div>
+      <div class="card-inner">
+        <div class="card-role-tag teal">🌐 策略 · 外部情報</div>
+        <div class="card-title">HR Intelligence Engine</div>
+        <div class="card-desc">
+          持續監測外部人資訊號，透過 AI 轉化為可行動的人資洞察，協助 HR 團隊掌握外部變化並及早回應。
+        </div>
+        <div class="card-positioning">
+          <span class="pos-chip neutral">外部訊號</span>
+          <span class="pos-arrow">→</span>
+          <span class="pos-chip teal">人資洞察</span>
+          <span class="pos-arrow">→</span>
+          <span class="pos-chip accent">行動</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Policy Mind -->
+    <div class="engine-card gold">
+      <div class="card-top gold"></div>
+      <div class="card-inner">
+        <div class="card-role-tag gold">🏛️ 治理 · 制度管理</div>
+        <div class="card-title">Policy Mind</div>
+        <div class="card-desc">
+          當 HR Intelligence Engine 偵測到外部法規或制度風險，或 HR 內部發現制度優化需求時，系統觸發治理流程——協助 HR 檢視制度衝突、法規落差與政策一致性，支援集團多公司制度管理與政策決策。
+        </div>
+        <div class="card-positioning">
+          <span class="pos-chip neutral">治理觸發</span>
+          <span class="pos-arrow">→</span>
+          <span class="pos-chip gold">制度治理</span>
+          <span class="pos-arrow">→</span>
+          <span class="pos-chip accent-g">HR 行動</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ⑥ FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">
+      <div class="footer-dot"></div>
+      AI HR Governance Framework · 集團人資
+    </div>
+    <div>HR Intelligence Engine · Policy Mind · AI 治理循環</div>
+  </div>
+
+</div>
+</body>
+</html>
