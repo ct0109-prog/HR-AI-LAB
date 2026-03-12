@@ -1,86 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<title>HR AI LAB</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HR Future Lab</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #eef3f7;
+      color: #1f2a44;
+    }
+    .hero {
+      background: #403d8a;
+      color: #fff;
+      padding: 70px 48px 120px;
+      position: relative;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 52px;
+      line-height: 1.1;
+      font-weight: 800;
+    }
+    .hero h1 .green {
+      color: #36ff3b;
+    }
+    .hero p {
+      margin: 24px 0 0;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .hero p .green {
+      color: #36ff3b;
+    }
+    .hero-note {
+      position: absolute;
+      right: 42px;
+      top: 145px;
+      font-size: 14px;
+      opacity: 0.85;
+    }
 
-<style>
-body{
-font-family:Arial;
-background:#f5f7fb;
-text-align:center;
-padding:60px;
-}
+    .cards-wrap {
+      margin-top: -56px;
+      padding: 0 36px 60px;
+      background: linear-gradient(90deg, #97d7d7 0%, #c8d8a7 100%);
+    }
 
-h1{
-font-size:40px;
-margin-bottom:40px;
-}
+    .cards {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(280px, 1fr));
+      gap: 28px;
+    }
 
-.container{
-display:flex;
-justify-content:center;
-gap:30px;
-flex-wrap:wrap;
-}
+    .card {
+      background: rgba(255,255,255,0.14);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      min-height: 290px;
+      position: relative;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 38px rgba(0,0,0,0.18);
+    }
 
-.card{
-background:white;
-padding:30px;
-width:280px;
-border-radius:12px;
-box-shadow:0 6px 20px rgba(0,0,0,0.08);
-transition:0.3s;
-}
+    .card-bg {
+      height: 100%;
+      min-height: 290px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
 
-.card:hover{
-transform:translateY(-6px);
-}
+    .card-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(70, 80, 100, 0.28);
+    }
 
-a{
-text-decoration:none;
-font-size:18px;
-color:#333;
-font-weight:bold;
-}
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
 
-.desc{
-margin-top:10px;
-font-size:14px;
-color:#777;
-}
-</style>
+    .tag {
+      display: inline-block;
+      background: #f3f4ef;
+      color: #4d7a12;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 3px;
+      margin-bottom: 18px;
+    }
 
+    .btn {
+      display: inline-block;
+      background: #f3f4ef;
+      color: #4d7a12;
+      font-weight: 800;
+      font-size: 17px;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    @media (max-width: 1024px) {
+      .cards { grid-template-columns: 1fr; }
+      .hero-note {
+        position: static;
+        margin-top: 18px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <section class="hero">
+    <h1>HR <span class="green">Future</span> Lab</h1>
+    <p>Exploring the Future of <span class="green">AI-Augmented</span> HR Governance</p>
+    <div class="hero-note">2026/3 HRIS Team</div>
+  </section>
 
-<h1>HR AI LAB</h1>
+  <section class="cards-wrap">
+    <div class="cards">
+      <div class="card">
+        <div class="card-bg" style="background-image:url('https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=80');">
+          <div class="card-content">
+            <div class="tag">HR AI GOVERNANCE FRAMEWORK</div>
+          </div>
+          <div class="card-content">
+            <a class="btn" href="hr-ai-governance-opening-v2%20(2).html" target="_blank">Explore Framework</a>
+          </div>
+        </div>
+      </div>
 
-<div class="container">
+      <div class="card">
+        <div class="card-bg" style="background-image:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80');">
+          <div class="card-content">
+            <div class="tag">HR INTELLIGENCE ENGINE</div>
+          </div>
+          <div class="card-content">
+            <a class="btn" href="hr-intelligence.html" target="_blank">View Intelligence Deck</a>
+          </div>
+        </div>
+      </div>
 
-<div class="card">
-<a href="hr-ai-governance-opening-v2%20(2).html">
-AI Governance
-</a>
-<div class="desc">HR AI Governance Concept</div>
-</div>
-
-<div class="card">
-<a href="policymind-v11.html">
-PolicyMind
-</a>
-<div class="desc">AI Policy Intelligence Engine</div>
-</div>
-
-<div class="card">
-<a href="presentation.pdf">
-Presentation
-</a>
-<div class="desc">Project Overview</div>
-</div>
-
-</div>
-
+      <div class="card">
+        <div class="card-bg" style="background-image:url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80');">
+          <div class="card-content">
+            <div class="tag">POLICY MIND</div>
+          </div>
+          <div class="card-content">
+            <a class="btn" href="policymind-v11.html" target="_blank">Explore Policy Mind</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
