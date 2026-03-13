@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -8,157 +9,155 @@
     * { box-sizing: border-box; }
 
     :root{
-      --bg-deep-1:#322f7a;
-      --bg-deep-2:#3c3991;
-      --bg-deep-3:#2d2c73;
-      --green:#33ff42;
-      --white:#f7f7f4;
-      --tag-bg:#f3f4ef;
-      --tag-text:#62871a;
-      --btn-bg:#f5f6f0;
-      --btn-text:#5f8619;
+      --bg1:#2f2c72;
+      --bg2:#3b3792;
+      --bg3:#4f64a5;
+      --bg4:#72b8b9;
+      --bg5:#bed6ab;
+      --white:#f6f6f2;
+      --text-soft:rgba(255,255,255,.82);
+      --green:#38ff45;
+      --mint:#8ffff1;
+      --btn-bg:rgba(255,255,255,.12);
+      --btn-bd:rgba(255,255,255,.22);
+      --btn-tx:#ffffff;
+      --card-bg:rgba(255,255,255,.06);
+      --card-bd:rgba(255,255,255,.10);
     }
 
-    body{
+    html,body{
       margin:0;
       font-family: Arial, Helvetica, "Segoe UI", sans-serif;
-      color:#fff;
+      color:var(--white);
       background:
         linear-gradient(
           180deg,
-          #3a3789 0%,
-          #34317f 52%,
-          #547fa1 64%,
-          #8fcfc8 78%,
-          #c8dcb0 100%
+          #2f2c72 0%,
+          #37338a 24%,
+          #4d5fa0 48%,
+          #73b0b7 72%,
+          #bfd7ad 100%
         );
     }
 
-    .hero{
+    body{
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    .page{
       position:relative;
-      overflow:hidden;
-      min-height:400px;
-      padding:28px 24px 56px;
+      min-height:100vh;
       background:
-        radial-gradient(ellipse at 18% 18%, rgba(79,219,211,.18) 0%, rgba(79,219,211,.04) 20%, transparent 42%),
-        radial-gradient(ellipse at 78% 20%, rgba(114,227,218,.12) 0%, rgba(114,227,218,.03) 18%, transparent 34%),
-        radial-gradient(ellipse at 50% 32%, rgba(255,255,255,.08) 0%, rgba(255,255,255,.015) 18%, transparent 38%),
-        linear-gradient(135deg, var(--bg-deep-1) 0%, var(--bg-deep-2) 48%, var(--bg-deep-3) 100%);
+        radial-gradient(1200px 420px at 18% 12%, rgba(155,255,235,.13) 0%, rgba(155,255,235,.04) 24%, transparent 48%),
+        radial-gradient(1000px 360px at 78% 10%, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 20%, transparent 46%),
+        radial-gradient(1100px 480px at 52% 38%, rgba(139,180,255,.10) 0%, rgba(139,180,255,.025) 26%, transparent 58%);
     }
 
-    .hero::before{
+    /* 光膜層 */
+    .page::before{
       content:"";
-      position:absolute;
+      position:fixed;
       inset:0;
-      background:
-        linear-gradient(90deg,
-          rgba(255,255,255,.05) 0%,
-          rgba(255,255,255,.01) 4%,
-          transparent 8%,
-          rgba(255,255,255,.03) 13%,
-          transparent 19%,
-          rgba(255,255,255,.025) 27%,
-          transparent 35%,
-          rgba(255,255,255,.035) 43%,
-          transparent 51%,
-          rgba(255,255,255,.03) 60%,
-          transparent 68%,
-          rgba(255,255,255,.02) 77%,
-          transparent 86%,
-          rgba(255,255,255,.03) 94%,
-          transparent 100%);
-      opacity:.65;
       pointer-events:none;
+      background:
+        linear-gradient(105deg,
+          rgba(255,255,255,.00) 0%,
+          rgba(255,255,255,.05) 10%,
+          rgba(255,255,255,.01) 18%,
+          rgba(255,255,255,.06) 28%,
+          rgba(255,255,255,.015) 40%,
+          rgba(255,255,255,.05) 52%,
+          rgba(255,255,255,.015) 64%,
+          rgba(255,255,255,.045) 76%,
+          rgba(255,255,255,.01) 88%,
+          rgba(255,255,255,.00) 100%);
       mix-blend-mode:screen;
+      opacity:.55;
     }
 
-    .hero::after{
+    /* 貓眼流動柔光 */
+    .page::after{
       content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:-40px;
-      height:180px;
-      background:
-        radial-gradient(ellipse at 20% 35%, rgba(255,255,255,.13) 0%, rgba(255,255,255,.04) 20%, transparent 48%),
-        radial-gradient(ellipse at 55% 45%, rgba(108,255,226,.10) 0%, rgba(108,255,226,.03) 18%, transparent 42%),
-        radial-gradient(ellipse at 82% 30%, rgba(255,255,255,.09) 0%, rgba(255,255,255,.03) 20%, transparent 46%);
-      filter: blur(10px);
+      position:fixed;
+      inset:-10% -10% auto -10%;
+      height:52vh;
       pointer-events:none;
+      background:
+        radial-gradient(ellipse at 18% 48%, rgba(255,255,255,.16) 0%, rgba(255,255,255,.04) 20%, transparent 46%),
+        radial-gradient(ellipse at 46% 35%, rgba(123,255,229,.12) 0%, rgba(123,255,229,.03) 16%, transparent 40%),
+        radial-gradient(ellipse at 78% 42%, rgba(255,255,255,.12) 0%, rgba(255,255,255,.03) 20%, transparent 44%);
+      filter: blur(12px);
+      opacity:.95;
     }
 
-    .hero-grid{
-      position:absolute;
+    .grid{
+      position:fixed;
       inset:0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-      background-size:48px 48px;
-      opacity:.14;
       pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+      background-size:52px 52px;
+      opacity:.24;
     }
 
     .orb{
       position:absolute;
       border-radius:50%;
-      background:rgba(0,185,176,.88);
-      box-shadow:0 0 22px rgba(45,255,229,.12);
-      opacity:.95;
+      opacity:.9;
+      filter: blur(.2px);
+      pointer-events:none;
     }
-    .orb.gray{
-      background:#b3b3b3;
-      box-shadow:none;
-    }
+    .orb.teal{ background:#10b8ad; box-shadow:0 0 28px rgba(89,255,224,.10); }
+    .orb.gray{ background:#b7b7b7; }
 
-    .o1{ width:38px; height:38px; left:18px; top:16px;}
-    .o2{ width:28px; height:28px; left:290px; top:14px;}
-    .o3{ width:46px; height:46px; left:940px; top:18px;}
-    .o4{ width:30px; height:30px; left:1430px; top:18px;}
-    .o5{ width:40px; height:40px; right:64px; top:-4px;}
-    .o6{ width:30px; height:30px; left:860px; top:26px;}
-    .o7{ width:44px; height:44px; left:1110px; top:18px;}
-    .o8{ width:42px; height:42px; left:1290px; top:20px;}
-    .o9{ width:34px; height:34px; left:1460px; top:28px; opacity:.45;}
-    .o10{ width:34px; height:34px; left:310px; top:44px; opacity:.75;}
-    .o11{ width:34px; height:34px; left:710px; top:44px; opacity:.72;}
-    .o12{ width:34px; height:34px; left:1455px; top:46px; opacity:.45;}
+    .o1{ width:42px; height:42px; top:14px; left:16px; }
+    .o2{ width:34px; height:34px; top:16px; left:290px; }
+    .o3{ width:44px; height:44px; top:26px; left:680px; }
+    .o4{ width:54px; height:54px; top:18px; left:772px; }
+    .o5{ width:50px; height:50px; top:28px; left:1098px; }
+    .o6{ width:56px; height:56px; top:16px; left:1178px; }
+    .o7{ width:58px; height:58px; top:22px; left:1438px; }
+    .o8{ width:34px; height:34px; top:48px; left:1458px; opacity:.42; }
+    .o9{ width:28px; height:28px; top:48px; left:276px; opacity:.6; }
+    .o10{ width:34px; height:34px; top:44px; left:1090px; opacity:.42; }
 
-    .hero-content{
+    .hero{
       position:relative;
-      z-index:2;
-      max-width:1480px;
+      z-index:1;
+      max-width:1500px;
       margin:0 auto;
-      padding-top:4px;
+      padding:44px 28px 18px;
     }
 
     .title-row{
       display:flex;
       align-items:flex-start;
       gap:10px;
-      margin-bottom:26px;
+      margin-bottom:18px;
     }
 
     .title{
       margin:0;
-      font-size:clamp(42px, 5.1vw, 68px);
+      font-size:clamp(40px, 5.4vw, 74px);
       line-height:.96;
-      letter-spacing:-1.5px;
       font-weight:800;
+      letter-spacing:-1.8px;
       color:var(--white);
       text-shadow:0 1px 0 rgba(255,255,255,.04);
     }
 
     .title .green{ color:var(--green); }
 
-    .tiny-link{
-      color:rgba(255,255,255,.85);
+    .mini-link{
+      margin-top:14px;
+      font-size:19px;
+      color:rgba(255,255,255,.78);
       text-decoration:none;
-      font-size:18px;
-      margin-top:12px;
-      opacity:.9;
     }
 
-    .subtitle-row{
+    .hero-bottom{
       display:flex;
       justify-content:space-between;
       align-items:flex-start;
@@ -168,13 +167,12 @@
 
     .subtitle{
       margin:0;
-      max-width:1060px;
-      font-size:clamp(24px, 2.6vw, 36px);
-      line-height:1.18;
-      font-weight:780;
+      max-width:1120px;
+      font-size:clamp(22px, 2.75vw, 42px);
+      line-height:1.14;
+      font-weight:760;
+      letter-spacing:-.5px;
       color:var(--white);
-      letter-spacing:-.4px;
-      text-wrap:balance;
       text-shadow:0 1px 0 rgba(255,255,255,.04);
     }
 
@@ -182,238 +180,342 @@
 
     .hero-note{
       padding-top:12px;
-      font-size:15px;
+      font-size:14px;
       font-weight:700;
-      color:rgba(255,255,255,.82);
+      color:var(--text-soft);
       white-space:nowrap;
     }
 
+    /* Hero 中段氣氛視覺 */
+    .hero-visual{
+      position:relative;
+      height:150px;
+      margin-top:18px;
+      opacity:.9;
+    }
+
+    .hero-visual::before{
+      content:"";
+      position:absolute;
+      inset:12% 12% 14% 12%;
+      border-radius:999px;
+      background:
+        radial-gradient(ellipse at center,
+          rgba(255,255,255,.09) 0%,
+          rgba(255,255,255,.04) 24%,
+          rgba(255,255,255,.015) 42%,
+          transparent 68%);
+      filter: blur(6px);
+    }
+
+    .hero-visual::after{
+      content:"";
+      position:absolute;
+      left:10%;
+      right:10%;
+      top:50%;
+      height:1px;
+      background:linear-gradient(90deg,
+        transparent 0%,
+        rgba(143,255,241,.18) 18%,
+        rgba(255,255,255,.14) 50%,
+        rgba(143,255,241,.18) 82%,
+        transparent 100%);
+      box-shadow:0 0 18px rgba(143,255,241,.12);
+    }
+
+    .signal{
+      position:absolute;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:#8ffff1;
+      box-shadow:0 0 20px rgba(143,255,241,.16);
+    }
+    .s1{ left:18%; width:9px; height:9px; opacity:.55; }
+    .s2{ left:31%; width:11px; height:11px; opacity:.72; }
+    .s3{ left:50%; width:15px; height:15px; opacity:.92; }
+    .s4{ left:69%; width:11px; height:11px; opacity:.72; }
+    .s5{ left:82%; width:9px; height:9px; opacity:.55; }
+
     .cards-section{
       position:relative;
-      padding:38px 10px 18px;
-      background:
-        radial-gradient(circle at 50% -40px,
-          rgba(255,255,255,.34) 0%,
-          rgba(255,255,255,.14) 28%,
-          transparent 68%),
-        linear-gradient(90deg, #91d8d6 0%, #c7ddb0 100%);
+      z-index:1;
+      max-width:1500px;
+      margin:0 auto;
+      padding:10px 28px 40px;
     }
 
     .cards{
-      max-width:1460px;
-      margin:0 auto;
       display:grid;
       grid-template-columns:repeat(3, minmax(280px, 1fr));
-      gap:52px;
+      gap:32px;
     }
 
     .card{
-      min-height:300px;
-      border-radius:4px;
+      position:relative;
+      min-height:272px;
+      border-radius:24px;
       overflow:hidden;
-      transition:transform .18s ease, filter .18s ease;
+      border:1px solid var(--card-bd);
+      background:var(--card-bg);
+      box-shadow:
+        0 18px 40px rgba(18,26,48,.16),
+        inset 0 1px 0 rgba(255,255,255,.05);
+      backdrop-filter: blur(8px);
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
 
     .card:hover{
-      transform:translateY(-4px);
-      filter:brightness(1.02);
+      transform:translateY(-5px);
+      border-color:rgba(255,255,255,.16);
+      box-shadow:
+        0 24px 52px rgba(18,26,48,.20),
+        inset 0 1px 0 rgba(255,255,255,.06);
     }
 
-    .card-inner{
-      position:relative;
-      min-height:300px;
-      padding:34px 38px 30px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      overflow:hidden;
-      isolation:isolate;
-      background-color:#6a7380;
-    }
-
-    .card-inner::before{
+    .card::before{
       content:"";
       position:absolute;
       inset:0;
       background-image:
-        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
-      background-size:36px 36px;
-      opacity:.28;
-      z-index:0;
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size:30px 30px;
+      opacity:.42;
+      pointer-events:none;
     }
 
-    .card-inner::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.06));
-      z-index:0;
-    }
-
-    .governance{
-      background:
-        radial-gradient(circle at 50% 55%, rgba(148,255,244,.34) 0 10px, transparent 11px),
-        radial-gradient(circle at 32% 55%, rgba(148,255,244,.78) 0 8px, transparent 9px),
-        radial-gradient(circle at 68% 55%, rgba(148,255,244,.78) 0 8px, transparent 9px),
-        radial-gradient(circle at 50% 30%, rgba(148,255,244,.78) 0 8px, transparent 9px),
-        radial-gradient(circle at 50% 80%, rgba(148,255,244,.78) 0 8px, transparent 9px),
-        radial-gradient(circle at 14% 18%, rgba(148,255,244,.70) 0 7px, transparent 8px),
-        radial-gradient(circle at 86% 18%, rgba(148,255,244,.70) 0 7px, transparent 8px),
-        radial-gradient(circle at 84% 72%, rgba(148,255,244,.70) 0 7px, transparent 8px),
-        repeating-radial-gradient(circle at 50% 55%, rgba(148,255,244,.20) 0 2px, transparent 2px 28px),
-        linear-gradient(135deg, #6d7781 0%, #67717a 100%);
-    }
-
-    .intelligence{
-      background:
-        radial-gradient(ellipse at 50% 50%, rgba(103,170,255,.20) 0%, rgba(103,170,255,.07) 18%, transparent 42%),
-        linear-gradient(90deg, transparent 8%, rgba(107,177,255,.08) 20%, rgba(107,177,255,.22) 50%, rgba(107,177,255,.08) 80%, transparent 92%),
-        radial-gradient(circle at 24% 60%, rgba(107,177,255,.88) 0 8px, transparent 9px),
-        radial-gradient(circle at 36% 60%, rgba(107,177,255,.88) 0 8px, transparent 9px),
-        radial-gradient(circle at 50% 60%, rgba(107,177,255,.95) 0 11px, transparent 12px),
-        radial-gradient(circle at 64% 60%, rgba(107,177,255,.88) 0 8px, transparent 9px),
-        radial-gradient(circle at 76% 60%, rgba(107,177,255,.88) 0 8px, transparent 9px),
-        radial-gradient(circle at 82% 24%, rgba(107,177,255,.88) 0 9px, transparent 10px),
-        linear-gradient(135deg, #6d7887 0%, #677383 100%);
-    }
-
-    .policy{
-      background:
-        radial-gradient(ellipse at 50% 48%, rgba(255,223,121,.18) 0%, rgba(255,223,121,.05) 20%, transparent 42%),
-        radial-gradient(circle at 50% 55%, rgba(255,223,121,.40) 0 9px, transparent 10px),
-        radial-gradient(circle at 34% 36%, rgba(255,223,121,.86) 0 8px, transparent 9px),
-        radial-gradient(circle at 66% 36%, rgba(255,223,121,.86) 0 8px, transparent 9px),
-        radial-gradient(circle at 18% 58%, rgba(255,223,121,.84) 0 8px, transparent 9px),
-        radial-gradient(circle at 82% 58%, rgba(255,223,121,.84) 0 8px, transparent 9px),
-        radial-gradient(circle at 28% 80%, rgba(145,255,244,.78) 0 7px, transparent 8px),
-        radial-gradient(circle at 72% 80%, rgba(145,255,244,.78) 0 7px, transparent 8px),
-        repeating-radial-gradient(circle at 50% 55%, rgba(255,223,121,.17) 0 2px, transparent 2px 26px),
-        linear-gradient(135deg, #8a8274 0%, #7e776a 100%);
-    }
-
-    .card-layer{
+    .card-inner{
       position:relative;
       z-index:1;
+      height:100%;
+      padding:28px 28px 24px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
     }
 
-    .tag{
-      display:inline-block;
-      background:var(--tag-bg);
-      color:var(--tag-text);
-      padding:10px 16px;
-      font-size:18px;
-      line-height:1;
-      font-weight:800;
-      letter-spacing:-.2px;
-      border-radius:1px;
-      box-shadow:0 3px 12px rgba(0,0,0,.06);
+    .card-top{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
 
-    .btn{
-      display:inline-block;
-      background:var(--btn-bg);
-      color:var(--btn-text);
+    .eyebrow{
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.58);
+      font-weight:700;
+    }
+
+    .card-title{
+      margin:0;
+      font-size:30px;
+      line-height:1.02;
+      letter-spacing:-.8px;
+      color:#f8f8f5;
+      font-weight:790;
+      max-width:88%;
+    }
+
+    .card-desc{
+      margin:0;
+      font-size:14px;
+      line-height:1.55;
+      color:rgba(255,255,255,.72);
+      max-width:86%;
+    }
+
+    .card-cta{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      width:max-content;
+      padding:11px 16px;
+      border-radius:999px;
       text-decoration:none;
-      padding:11px 17px;
-      font-size:18px;
-      line-height:1;
-      font-weight:800;
-      border-radius:8px;
-      box-shadow:0 8px 18px rgba(0,0,0,.12);
+      color:var(--btn-tx);
+      background:var(--btn-bg);
+      border:1px solid var(--btn-bd);
+      backdrop-filter: blur(8px);
+      font-size:14px;
+      font-weight:760;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
     }
 
-    .btn:hover{ filter:brightness(.98); }
-
-    @media (max-width:1200px){
-      .cards{ gap:28px; }
-      .card-inner{ min-height:280px; }
+    .card-cta:hover{
+      background:rgba(255,255,255,.16);
     }
 
-    @media (max-width:1024px){
-      .cards{ grid-template-columns:1fr; }
-      .hero{ min-height:auto; padding-bottom:54px; }
-      .subtitle{ max-width:100%; }
+    .arrow{
+      font-size:16px;
+      opacity:.85;
+    }
+
+    /* 各卡抽象圖形 */
+    .pattern{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.9;
+    }
+
+    .governance .pattern{
+      background:
+        radial-gradient(circle at 24% 30%, rgba(143,255,241,.70) 0 6px, transparent 7px),
+        radial-gradient(circle at 76% 32%, rgba(143,255,241,.70) 0 6px, transparent 7px),
+        radial-gradient(circle at 50% 50%, rgba(143,255,241,.82) 0 8px, transparent 9px),
+        radial-gradient(circle at 33% 68%, rgba(143,255,241,.68) 0 6px, transparent 7px),
+        radial-gradient(circle at 67% 70%, rgba(143,255,241,.68) 0 6px, transparent 7px),
+        radial-gradient(circle at 50% 22%, rgba(143,255,241,.55) 0 5px, transparent 6px),
+        repeating-radial-gradient(circle at 50% 50%, rgba(143,255,241,.10) 0 2px, transparent 2px 20px);
+    }
+
+    .intelligence .pattern{
+      background:
+        linear-gradient(90deg, transparent 0%, rgba(118,181,255,.08) 18%, rgba(118,181,255,.20) 50%, rgba(118,181,255,.08) 82%, transparent 100%),
+        radial-gradient(circle at 22% 62%, rgba(118,181,255,.84) 0 7px, transparent 8px),
+        radial-gradient(circle at 36% 62%, rgba(118,181,255,.84) 0 7px, transparent 8px),
+        radial-gradient(circle at 50% 62%, rgba(118,181,255,.95) 0 10px, transparent 11px),
+        radial-gradient(circle at 64% 62%, rgba(118,181,255,.84) 0 7px, transparent 8px),
+        radial-gradient(circle at 78% 62%, rgba(118,181,255,.84) 0 7px, transparent 8px),
+        radial-gradient(circle at 78% 28%, rgba(118,181,255,.82) 0 8px, transparent 9px);
+    }
+
+    .policy .pattern{
+      background:
+        radial-gradient(circle at 50% 54%, rgba(255,224,124,.34) 0 8px, transparent 9px),
+        radial-gradient(circle at 34% 34%, rgba(255,224,124,.84) 0 7px, transparent 8px),
+        radial-gradient(circle at 66% 34%, rgba(255,224,124,.84) 0 7px, transparent 8px),
+        radial-gradient(circle at 20% 58%, rgba(255,224,124,.82) 0 7px, transparent 8px),
+        radial-gradient(circle at 80% 58%, rgba(255,224,124,.82) 0 7px, transparent 8px),
+        radial-gradient(circle at 30% 78%, rgba(143,255,241,.72) 0 6px, transparent 7px),
+        radial-gradient(circle at 70% 78%, rgba(143,255,241,.72) 0 6px, transparent 7px),
+        repeating-radial-gradient(circle at 50% 54%, rgba(255,224,124,.09) 0 2px, transparent 2px 20px);
+    }
+
+    @media (max-width:1100px){
+      .cards{
+        grid-template-columns:1fr;
+      }
+      .hero{
+        padding-bottom:10px;
+      }
+      .hero-visual{
+        height:120px;
+      }
     }
 
     @media (max-width:680px){
-      .hero{ padding:24px 18px 48px; }
-      .cards-section{ padding:26px 14px 20px; }
-      .card-inner{ padding:28px 26px; }
-      .tag{ font-size:16px; }
-      .btn{ font-size:16px; }
+      .hero{
+        padding:28px 18px 4px;
+      }
+      .cards-section{
+        padding:8px 18px 28px;
+      }
+      .card{
+        min-height:248px;
+        border-radius:20px;
+      }
+      .card-inner{
+        padding:24px 22px 20px;
+      }
+      .card-title{
+        font-size:25px;
+      }
+      .subtitle{
+        line-height:1.16;
+      }
+      .hero-visual{
+        height:96px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="page">
+    <div class="grid"></div>
 
-  <section class="hero">
-    <div class="hero-grid"></div>
-
-    <span class="orb o1"></span>
+    <span class="orb teal o1"></span>
     <span class="orb gray o2"></span>
-    <span class="orb o3"></span>
-    <span class="orb o4"></span>
-    <span class="orb o5"></span>
-    <span class="orb o6"></span>
+    <span class="orb teal o3"></span>
+    <span class="orb teal o4"></span>
+    <span class="orb teal o5"></span>
+    <span class="orb teal o6"></span>
     <span class="orb gray o7"></span>
     <span class="orb gray o8"></span>
-    <span class="orb o9"></span>
+    <span class="orb teal o9"></span>
     <span class="orb gray o10"></span>
-    <span class="orb o11"></span>
-    <span class="orb o12"></span>
 
-    <div class="hero-content">
+    <section class="hero">
       <div class="title-row">
         <h1 class="title">HR <span class="green">Future</span> Lab</h1>
-        <a class="tiny-link" href="index.html">🔗</a>
+        <a class="mini-link" href="index.html">🔗</a>
       </div>
 
-      <div class="subtitle-row">
+      <div class="hero-bottom">
         <p class="subtitle">Exploring the Future of <span class="green">AI-Augmented</span> HR Governance</p>
         <div class="hero-note">2026/3 HRIS Team</div>
       </div>
-    </div>
-  </section>
 
-  <section class="cards-section">
-    <div class="cards">
-      <article class="card">
-        <div class="card-inner governance">
-          <div class="card-layer">
-            <div class="tag">HR AI GOVERNANCE FRAMEWORK</div>
-          </div>
-          <div class="card-layer">
-            <a class="btn" href="hr-ai-governance-opening-v2%20(2).html" target="_blank">Explore Framework</a>
-          </div>
-        </div>
-      </article>
+      <div class="hero-visual">
+        <span class="signal s1"></span>
+        <span class="signal s2"></span>
+        <span class="signal s3"></span>
+        <span class="signal s4"></span>
+        <span class="signal s5"></span>
+      </div>
+    </section>
 
-      <article class="card">
-        <div class="card-inner intelligence">
-          <div class="card-layer">
-            <div class="tag">HR INTELLIGENCE ENGINE</div>
+    <section class="cards-section">
+      <div class="cards">
+        <article class="card governance">
+          <div class="pattern"></div>
+          <div class="card-inner">
+            <div class="card-top">
+              <div class="eyebrow">Framework</div>
+              <h2 class="card-title">HR AI Governance Framework</h2>
+              <p class="card-desc">Responsible AI structure, decision logic, and governance pathways for HR application scenarios.</p>
+            </div>
+            <a class="card-cta" href="hr-ai-governance-opening-v2%20(2).html" target="_blank">
+              Explore Framework <span class="arrow">↗</span>
+            </a>
           </div>
-          <div class="card-layer">
-            <a class="btn" href="hr-intelligence.html" target="_blank">View Intelligence Deck</a>
-          </div>
-        </div>
-      </article>
+        </article>
 
-      <article class="card">
-        <div class="card-inner policy">
-          <div class="card-layer">
-            <div class="tag">POLICY MIND</div>
+        <article class="card intelligence">
+          <div class="pattern"></div>
+          <div class="card-inner">
+            <div class="card-top">
+              <div class="eyebrow">Deck</div>
+              <h2 class="card-title">HR Intelligence Engine</h2>
+              <p class="card-desc">A concept deck for insight generation, AI-enabled decision support, and future HR intelligence architecture.</p>
+            </div>
+            <a class="card-cta" href="hr-intelligence.html" target="_blank">
+              View Intelligence Deck <span class="arrow">↗</span>
+            </a>
           </div>
-          <div class="card-layer">
-            <a class="btn" href="policymind-v11.html" target="_blank">Explore Policy Mind</a>
-          </div>
-        </div>
-      </article>
-    </div>
-  </section>
+        </article>
 
+        <article class="card policy">
+          <div class="pattern"></div>
+          <div class="card-inner">
+            <div class="card-top">
+              <div class="eyebrow">Experience</div>
+              <h2 class="card-title">Policy Mind</h2>
+              <p class="card-desc">An interactive concept for AI-guided policy interpretation and next-step navigation in HR contexts.</p>
+            </div>
+            <a class="card-cta" href="policymind-v11.html" target="_blank">
+              Explore Policy Mind <span class="arrow">↗</span>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
 </body>
 </html>
-  
